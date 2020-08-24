@@ -14,4 +14,5 @@
           shell: powershell.exe
           command: |
                   choco install llvm
+                  refreshenv
                   clang++ --version
