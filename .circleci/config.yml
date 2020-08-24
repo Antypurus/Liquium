@@ -9,4 +9,7 @@
     
      steps:
        - checkout
-       - call echo "test"
+       - run:
+          name: "test"
+          shell: powershell.exe
+          command: echo "test"
