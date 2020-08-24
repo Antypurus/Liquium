@@ -3,7 +3,7 @@ stages:
 
 "Build":
  stage: Lint
- image: mcr.microsoft.com/dotnet/framework/sdk:3.5
+ image: mcr.microsoft.com/windows/servercore:2004
  script:
   - echo "hello"
 
