@@ -1,8 +1,9 @@
 stages:
-	- Lint
+ - Lint
 
 "Build":
-	stage: Lint
-	image: buildtools2017native:latest
-	script:
-		- echo "hello"
+ stage: Lint
+ image: https://github.com/microsoft/vs-dockerfiles/blob/master/native-desktop/Dockerfile
+ script:
+  - echo "hello"
+
