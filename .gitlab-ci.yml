@@ -3,7 +3,7 @@ stages:
 
 "Build":
  stage: Lint
- image: microsoft/dotnet-sdk:4.8-sdk-windowsservercore-2004
+ image: mcr.microsoft.com/dotnet/framework/sdk
  script:
   - echo "hello"
 
