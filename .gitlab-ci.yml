@@ -1,8 +1,8 @@
 stages:
-	- Lint
+ - Lint
 
 "Build":
-	stage: Lint
-	image: buildtools2017native:latest
-	script:
-		- echo "hello"
+ stage: Lint
+ image: buildtools2017native:latest
+ script:
+  - echo "hello"
