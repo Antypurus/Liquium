@@ -13,6 +13,6 @@
           name: "test"
           shell: powershell.exe
           command: |
-                  choco install llvm
+                  choco install llvm cmake
                   refreshenv
                   clang++ --version
