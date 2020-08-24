@@ -3,7 +3,7 @@ stages:
 
 "Build":
  stage: Lint
- image: mcr.microsoft.com/dotnet/framework/sdk
+ image: mcr.microsoft.com/dotnet/framework/sdk:3.5
  script:
   - echo "hello"
 
