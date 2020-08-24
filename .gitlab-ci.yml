@@ -3,7 +3,7 @@ stages:
 
 "Build":
  stage: Lint
- image: https://github.com/microsoft/vs-dockerfiles/blob/master/native-desktop/Dockerfile
+ dockerfile: https://github.com/microsoft/vs-dockerfiles/blob/master/native-desktop/Dockerfile
  script:
   - echo "hello"
 
