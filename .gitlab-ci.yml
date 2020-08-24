@@ -1,9 +1,0 @@
-stages:
- - Lint
-
-"Build":
- stage: Lint
- image: mcr.microsoft.com/windows/servercore:2004
- script:
-  - echo "hello"
-
