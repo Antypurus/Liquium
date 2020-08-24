@@ -3,11 +3,7 @@ stages:
 
 "Build":
  stage: Lint
-<<<<<<< HEAD
- dockerfile: https://github.com/microsoft/vs-dockerfiles/blob/master/native-desktop/Dockerfile
-=======
- image: https://github.com/microsoft/vs-dockerfiles/blob/master/native-desktop/Dockerfile
->>>>>>> 0193e365131387d9d684dc94e58de40abbca3d5f
+ image: microsoft/dotnet-framework:4.8-sdk-windowsservercore-2004
  script:
   - echo "hello"
 
