@@ -12,4 +12,6 @@
        - run:
           name: "test"
           shell: powershell.exe
-          command: choco --version
+          command: |
+                  choco install llvm
+                  clang++ --version
