@@ -16,3 +16,7 @@
                   choco install llvm cmake
                   refreshenv
                   clang++ --version
+                  clang-tidy --version
+                  clang-format --version
+                  cmake --version
+                  cl --version
