@@ -1,0 +1,2 @@
+python ./Linting/clang-format.py --style microsoft (Get-ChildItem -Path ../Engine -Filter *.cpp -Recurse -File | % { $_.FullName } )
+python ./Linting/clang-format.py --style microsoft (Get-ChildItem -Path ../Engine -Filter *.hpp -Recurse -File | % { $_.FullName } )

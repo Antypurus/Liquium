@@ -1,0 +1,1 @@
+python ./Linting/lint.py

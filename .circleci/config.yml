@@ -3,10 +3,88 @@
  orbs:
   win: circleci/windows@2.2.0
 
+ workflows:
+  version: 2
+  DevPipeline:
+    jobs:
+      - "Linter"
+      - "Static Analysis":
+          requires:
+            - Linter
+      - "Clang Compilation":
+          requires:
+            - "Static Analysis"
+      - "MSVC Compilation":
+          requires:
+            - "Static Analysis"
+
  jobs:
-   build:
-     executor: win/default     
-    
+   "Linter":
+     executor: win/default
      steps:
        - checkout
-       - echo "test"
+       - run:
+          name: "Install Clang Format"
+          shell: powershell.exe
+          command: |
+                  choco install llvm -y
+                  refreshenv
+       - run:
+          name: "Code Linting"
+          shell: powershell.exe
+          command: |
+                  cd ./CI
+                  .\Lint.bat
+
+   "Static Analysis":
+     executor: win/default
+     steps:
+       - checkout
+       - run:
+          name: "Install Static Analyzers"
+          shell: powershell.exe
+          command: |
+                  choco install llvm ninja -y
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  pip install -r "./CI/Static Analysis/requirements.txt"
+                  refreshenv
+       - run:
+          name: "Clang-Tidy Static Analysis"
+          shell: powershell.exe
+          command: |
+                  ./CI/static_analysis.bat
+
+   "Clang Compilation":
+      executor: win/default
+      steps:
+       - checkout
+       - run:
+          name: "Install Clang, Ninja, & Cmake"
+          shell: powershell.exe
+          command: |
+                  choco install llvm ninja -y
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "Clang Compilation"
+          shell: powershell.exe
+          command: |
+                  ./build-clang.bat
+
+   "MSVC Compilation":
+      executor: win/default
+      steps:
+       - checkout
+       - run:
+          name: "Install Cmake"
+          shell: powershell.exe
+          command: |
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "MSVC Compilation"
+          shell: powershell.exe
+          command: |
+                  cmake .
+                  cmake --build .
+
