@@ -7,13 +7,13 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 endif()
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
-    #add_subdirectory(tests)
+    add_subdirectory(Tests)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        #set(warnings "/W4 /WX /EHsc")
-        #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26812")
-        #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /nologo /Oi")
+        set(warnings "/W4 /WX /EHsc")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26812")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /nologo /Oi")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         #clang frontend
 endif()
