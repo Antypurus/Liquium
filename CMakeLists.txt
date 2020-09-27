@@ -10,6 +10,8 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         #clang frontend
 endif()
 
+add_subdirectory(./Tests)
+
 file(GLOB_RECURSE  SRCS
         "Engine/*.cpp"
         "Engine/*.hpp"

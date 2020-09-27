@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(Liquium-Test)
+project(example)
 
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory(./ThirdParty/googletest)
 enable_testing()
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-add_executable(runUnitTests test_main.cpp)
-# Link test executable against gtest & gtest_main
-target_link_libraries(runUnitTests gtest gtest_main)
-add_test(runUnitTests runUnitTests)
+
+include(GoogleTest)
+add_executable(example test_main.cpp)
+target_link_libraries(example gtest_main)
+add_test(NAME example_test COMMAND example)

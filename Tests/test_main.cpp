@@ -1,6 +1,6 @@
-
+#include <gtest/gtest.h>
 
 void main()
 {
-    system("pause");
+    GTEST_ASSERT_EQ(1, 1);
 }
