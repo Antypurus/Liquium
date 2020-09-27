@@ -2,14 +2,6 @@ cmake_minimum_required(VERSION 3.14)
 
 project(Liquium VERSION 0.0.1)
 
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    include(CTest)
-endif()
-
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND BUILD_TESTING)
-    add_subdirectory(Tests)
-endif()
-
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         set(warnings "/W4 /WX /EHsc")
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26812")
