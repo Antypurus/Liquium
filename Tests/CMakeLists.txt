@@ -6,6 +6,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory(./ThirdParty/googletest)
 enable_testing()
 
+set(ENV{GTEST_COLOR} 1)
 
 include(GoogleTest)
 add_executable(example test_main.cpp)
