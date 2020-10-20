@@ -20,6 +20,7 @@ file(GLOB_RECURSE  SRCS
 add_compile_definitions(WIN32_LEAN_AND_MEAN)
 
 add_executable(${CMAKE_PROJECT_NAME} WIN32 src/Engine/Liquium_main.cpp ${SRCS})
+set_target_properties(Liquium PROPERTIES SUFFIX ".exe")
 
 set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 
