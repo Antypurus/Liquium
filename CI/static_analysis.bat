@@ -1,1 +1,1 @@
-clang-tidy ./src/Engine/Liquium_main.cpp
+call ./tools/run-static-analysis.bat
