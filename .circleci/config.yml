@@ -81,7 +81,7 @@
                   refreshenv
        - run:
           name: "MSVC Compilation"
-          shell: powershell.exe
+          shell: cmd.exe
           command: |
                   ./tools/build-msvc.bat
 
