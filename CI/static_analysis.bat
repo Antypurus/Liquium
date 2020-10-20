@@ -1,1 +1,1 @@
-clang-tidy ./Engine/Liquium_main.cpp
+clang-tidy ./src/Engine/Liquium_main.cpp

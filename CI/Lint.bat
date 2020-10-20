@@ -1,1 +1,1 @@
-python ./Linting/lint.py
+python ./CI/Linting/lint.py

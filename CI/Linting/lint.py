@@ -14,6 +14,7 @@ def fetch_all_file_to_lint(base_path):
     files_to_lint = []
     files_to_lint.extend(fetch_files(base_path,"cpp"))
     files_to_lint.extend(fetch_files(base_path,"hpp"))
+    files_to_lint.extend(fetch_files(base_path,"h"))
     return files_to_lint
 
 def lint_files(files,script_path):
@@ -29,8 +30,8 @@ def lint_files(files,script_path):
     return clang_output.returncode
 
 def main():
-    files = fetch_all_file_to_lint("../src/Engine")
-    return lint_files(files,"./Linting")
+    files = fetch_all_file_to_lint("./src/Engine")
+    return lint_files(files,"./CI/Linting")
 
 if __name__ == "__main__":
     ret = main()
