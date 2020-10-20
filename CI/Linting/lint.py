@@ -7,7 +7,7 @@ def fetch_files(base_path, extension):
     files = []
     files_to_lint = Path(base_path).rglob('*.'+extension)
     for file in files_to_lint:
-        files.append(file.absolute())
+        files.append(file.resolve())
     return files
 
 def fetch_all_file_to_lint(base_path):
@@ -30,7 +30,6 @@ def lint_files(files,script_path):
 
 def main():
     files = fetch_all_file_to_lint("../src/Engine")
-    print(files)
     return lint_files(files,"./Linting")
 
 if __name__ == "__main__":
