@@ -23,9 +23,11 @@ add_executable(${CMAKE_PROJECT_NAME} WIN32 src/Engine/Liquium_main.cpp ${SRCS})
 
 set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 
+
 target_link_libraries(Liquium PRIVATE
         "d3d12.lib"
         "dxgi.lib"
         "d3dcompiler.lib"
         "windowscodecs.lib"
+        "User32.lib" # i have to be explicit with the windows linkings because unlike msvc, clang cannot auto deduce them based on the headers or whatever
         )
