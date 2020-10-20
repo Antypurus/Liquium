@@ -1,23 +1,13 @@
 import subprocess as sp
 import os
 import sys
+from pathlib import Path
 
 def fetch_files(base_path, extension):
     files = []
-    args = []
-    args.append("powershell")
-    args.append("Get-ChildItem")
-    args.append("-Path")
-    args.append(base_path)
-    args.append("-Filter")
-    args.append("*."+extension)
-    args.append("-Recurse")
-    args.append("-File")
-    args.append("-Name")
-    files_to_lint = sp.run(args=args,universal_newlines = True,capture_output=True, text=True)
-    files_to_lint = files_to_lint.stdout.splitlines()
+    files_to_lint = Path(base_path).rglob('*.'+extension)
     for file in files_to_lint:
-        files.append(base_path+"/"+file)
+        files.append(file.absolute())
     return files
 
 def fetch_all_file_to_lint(base_path):
@@ -40,6 +30,7 @@ def lint_files(files,script_path):
 
 def main():
     files = fetch_all_file_to_lint("../src/Engine")
+    print(files)
     return lint_files(files,"./Linting")
 
 if __name__ == "__main__":
