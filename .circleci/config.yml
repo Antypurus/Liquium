@@ -44,6 +44,7 @@
           shell: powershell.exe
           command: |
                   choco install llvm ninja -y
+                  ninja --version
                   choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
                   refreshenv
        - run:
