@@ -33,9 +33,7 @@
           name: "Code Linting"
           shell: powershell.exe
           command: |
-                  cd ./CI
-                  python --version
-                  .\Lint.bat
+                  ./CI/Lint.bat
 
    "Static Analysis":
      executor: win/default
@@ -47,7 +45,6 @@
           command: |
                   choco install llvm ninja -y
                   choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
-                  pip install -r "./CI/Static Analysis/requirements.txt"
                   refreshenv
        - run:
           name: "Clang-Tidy Static Analysis"
@@ -70,7 +67,7 @@
           name: "Clang Compilation"
           shell: powershell.exe
           command: |
-                  ./build-clang.bat
+                  ./tools/build-clang.bat
 
    "MSVC Compilation":
       executor: win/default
@@ -86,6 +83,5 @@
           name: "MSVC Compilation"
           shell: powershell.exe
           command: |
-                  cmake .
-                  cmake --build .
+                  ./tools/build-msvc.bat
 
