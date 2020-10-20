@@ -75,12 +75,12 @@
        - checkout
        - run:
           name: "Install Cmake"
-          shell: powershell.exe
           command: |
                   choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
                   refreshenv
        - run:
           name: "MSVC Compilation"
+          shell: powershell.exe
           command: |
                   ./tools/build-msvc.bat
 
