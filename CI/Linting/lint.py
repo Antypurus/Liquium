@@ -39,7 +39,7 @@ def lint_files(files,script_path):
     return clang_output.returncode
 
 def main():
-    files = fetch_all_file_to_lint("../Engine")
+    files = fetch_all_file_to_lint("../src/Engine")
     return lint_files(files,"./Linting")
 
 if __name__ == "__main__":
