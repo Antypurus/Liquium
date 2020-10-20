@@ -10,16 +10,16 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         #clang frontend
 endif()
 
-add_subdirectory(./Tests)
+#add_subdirectory(./Tests)
 
 file(GLOB_RECURSE  SRCS
-        "Engine/*.cpp"
-        "Engine/*.hpp"
-	"Engine/*.h")
+        "src/Engine/*.cpp"
+        "src/Engine/*.hpp"
+	"src/Engine/*.h")
 
 add_compile_definitions(WIN32_LEAN_AND_MEAN)
 
-add_executable(${CMAKE_PROJECT_NAME} WIN32 Engine/Liquium_main.cpp ${SRCS})
+add_executable(${CMAKE_PROJECT_NAME} WIN32 src/Engine/Liquium_main.cpp ${SRCS})
 
 set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 
