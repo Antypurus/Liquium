@@ -7,7 +7,7 @@ def fetch_files(base_path, extension):
     files = []
     files_to_lint = Path(base_path).rglob('*.'+extension)
     for file in files_to_lint:
-        files.append(file.resolve())
+        files.append(str(file.resolve()))
     return files
 
 def fetch_all_file_to_lint(base_path):
