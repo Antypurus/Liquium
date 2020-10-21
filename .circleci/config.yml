@@ -84,4 +84,5 @@
           shell: powershell.exe
           command: |
                   ./tools/build-msvc.bat
+                  ./tools/build-clang.bat
 
