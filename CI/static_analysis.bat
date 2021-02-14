@@ -1,1 +1,0 @@
-call ./tools/run-static-analysis.bat

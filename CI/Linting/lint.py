@@ -22,15 +22,16 @@ def lint_files(files,script_path):
     args.append("powershell")
     args.append("python")
     args.append(script_path+"/clang-format.py")
-    args.append("--style")
-    args.append("microsoft")
+    args.append("--style=file")
+    #args.append("--verbose")
     args.extend(files)
     clang_output = sp.run(args=args,universal_newlines = True,capture_output=True, text=True);
     print(clang_output.stdout)
     return clang_output.returncode
 
 def main():
-    files = fetch_all_file_to_lint("./src/Engine")
+    files = fetch_all_file_to_lint("./src")
+    files.extend(fetch_all_file_to_lint("./tests/src/"))
     return lint_files(files,"./CI/Linting")
 
 if __name__ == "__main__":

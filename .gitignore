@@ -22,7 +22,6 @@ rules.ninja
 #msvc ignores
 **.vcxproj
 **.vcxproj.filters
-Debug
 *.sln
 *.dir
 x64
