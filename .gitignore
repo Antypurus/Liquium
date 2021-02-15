@@ -10,13 +10,21 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+build.ninja
+rules.ninja
+**.tcl
+
+#folder ignores
+/build
+/build-msvc
+/build-clang
 
 #msvc ignores
 **.vcxproj
 **.vcxproj.filters
-Debug
 *.sln
 *.dir
 x64
 .vs
 *.vcxproj.user
+.vscode

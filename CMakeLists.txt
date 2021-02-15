@@ -1,26 +1,11 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(Liquium VERSION 0.0.1)
+project(Liquium VERSION 0.0.1 LANGUAGES CXX)
 
-set(warnings "/W4 /WX /EHsc")
+add_subdirectory(src)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26812")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /nologo /Oi")
-
-file(GLOB_RECURSE  SRCS
-        "Engine/*.cpp"
-        "Engine/*.hpp"
-	    "Engine/*.h")
-
-add_compile_definitions(WIN32_LEAN_AND_MEAN)
-
-add_executable(${CMAKE_PROJECT_NAME} WIN32 Engine/Liquium_main.cpp ${SRCS})
-
-set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY CXX_STANDARD 17)
-
-target_link_libraries(Liquium PRIVATE
-        "d3d12.lib"
-        "dxgi.lib"
-        "d3dcompiler.lib"
-        "windowscodecs.lib"
-        )
+option(ENABLE_TESTS "Controls weather to compile tests or not" ON)
+if(ENABLE_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()

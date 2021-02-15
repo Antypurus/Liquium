@@ -1,0 +1,228 @@
+ version: 2.1
+
+ orbs:
+  win: circleci/windows@2.2.0
+
+ workflows:
+  version: 2
+  DevPipeline:
+    jobs:
+      - "Linter"
+      - "Static Analysis":
+          requires:
+           - Linter
+      - "Clang Debug Compilation":
+          requires:
+            - "Static Analysis"
+      - "Clang Release Compilation":
+          requires:
+            - "Static Analysis"
+      - "MSVC Debug Compilation":
+          requires:
+            - "Static Analysis"
+      - "MSVC Release Compilation":
+          requires:
+            - "Static Analysis"
+      - "Clang Debug Tests":
+          requires:
+            - "Clang Debug Compilation"
+      - "Clang Release Tests":
+          requires:
+            - "Clang Release Compilation"
+      - "MSVC Debug Tests":
+          requires:
+            - "MSVC Debug Compilation"
+      - "MSVC Release Tests":
+          requires:
+            - "MSVC Release Compilation"
+      - "Publish":
+          requires:
+            - "MSVC Release Tests"
+            - "MSVC Debug Tests"
+            - "Clang Release Tests"
+            - "Clang Debug Tests"
+          filters:
+            branches:
+              only:
+                - dev
+              
+ jobs:
+   "Linter":
+     executor: win/default
+     steps:
+       - checkout
+       - run:
+          name: "Install Clang Format"
+          shell: powershell.exe
+          command: |
+                  choco install llvm -y
+                  refreshenv
+       - run:
+          name: "Code Linting"
+          shell: powershell.exe
+          command: |
+                  ./CI/Lint.bat
+
+   "Static Analysis":
+     executor: win/default
+     steps:
+       - checkout
+       - run:
+          name: "Install Static Analyzers"
+          shell: powershell.exe
+          command: |
+                  choco install ninja --version=1.10.1 -y
+                  choco install llvm --version=10.0.0 -y
+                  choco install cmake --version=3.18.3 --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "Clang-Tidy Static Analysis"
+          shell: powershell.exe
+          command: |
+                  ./CI/set-vcvars64.ps1
+                  ./CI/static-analysis.bat
+
+   "Clang Debug Compilation":
+      executor: win/default
+      steps:
+       - checkout
+       - run:
+          name: "Install Clang, Ninja, & Cmake"
+          shell: powershell.exe
+          command: |
+                  choco install llvm ninja -y
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "Clang Compilation"
+          shell: powershell.exe
+          command: |
+                  ./CI/set-vcvars64.ps1
+                  scripts/clang/build/Debug/build.bat
+
+   "Clang Release Compilation":
+      executor: win/default
+      steps:
+       - checkout
+       - run:
+          name: "Install Clang, Ninja, & Cmake"
+          shell: powershell.exe
+          command: |
+                  choco install llvm ninja -y
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "Clang Compilation"
+          shell: powershell.exe
+          command: |
+                  ./CI/set-vcvars64.ps1
+                  scripts/clang/build/Release/build.bat
+
+   "MSVC Debug Compilation":
+      executor: win/default
+      steps:
+       - checkout
+       - run:
+          name: "Install Cmake"
+          command: |
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "MSVC Compilation"
+          shell: powershell.exe
+          command: |
+                  scripts/msvc/build/Debug/build.bat
+
+   "MSVC Release Compilation":
+      executor: win/default
+      steps:
+       - checkout
+       - run:
+          name: "Install Cmake"
+          command: |
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "MSVC Compilation"
+          shell: powershell.exe
+          command: |
+                  scripts/msvc/build/Release/build.bat
+
+   "Clang Debug Tests":
+      executor: win/default
+      steps:
+       - checkout
+       - run:
+          name: "Install Clang, Ninja, & Cmake"
+          shell: powershell.exe
+          command: |
+                  choco install llvm ninja -y
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "Clang Compilation"
+          shell: powershell.exe
+          command: |
+                  ./CI/set-vcvars64.ps1
+                  scripts/clang/tests/Debug/run.bat
+
+   "Clang Release Tests":
+      executor: win/default
+      steps:
+       - checkout
+       - run:
+          name: "Install Clang, Ninja, & Cmake"
+          shell: powershell.exe
+          command: |
+                  choco install llvm ninja -y
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "Clang Compilation"
+          shell: powershell.exe
+          command: |
+                  ./CI/set-vcvars64.ps1
+                  scripts/clang/tests/Release/run.bat
+
+   "MSVC Debug Tests":
+      executor: win/default
+      steps:
+       - checkout
+       - run:
+          name: "Install Cmake"
+          command: |
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "MSVC Compilation"
+          shell: powershell.exe
+          command: |
+                  scripts/msvc/tests/Debug/run.bat
+
+   "MSVC Release Tests":
+      executor: win/default
+      steps:
+       - checkout
+       - run:
+          name: "Install Cmake"
+          command: |
+                  choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+                  refreshenv
+       - run:
+          name: "MSVC Compilation"
+          shell: powershell.exe
+          command: |
+                  scripts/msvc/tests/Release/run.bat
+
+   "Publish":
+      docker:
+       - image: circleci/golang
+      steps:
+       - checkout
+       - run:
+          name: "Publish release to github"
+          command: |
+                  go get -u github.com/tcnksm/ghr
+                  VERSION=$(python ./CI/gen_version.py)
+                  ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -prerelease -delete ${VERSION}
+               
