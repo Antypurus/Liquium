@@ -37,7 +37,7 @@ else()
 endif()
 
 set_target_properties(Liquium PROPERTIES LINKER_LANGUAGE CXX)
-set_target_properties(Liquium PROPERTIES CXX_STANDARD 17)
+set_target_properties(Liquium PROPERTIES CXX_STANDARD 20)
 
 # warning blob of gabage incoming
 set_target_properties(Liquium PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)# required by clang

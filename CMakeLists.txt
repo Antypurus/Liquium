@@ -5,7 +5,6 @@ project(Liquium VERSION 0.0.1 LANGUAGES CXX)
 add_subdirectory(src)
 
 option(ENABLE_TESTS "Controls weather to compile tests or not" ON)
-# testing can only be done with msvc because google test is garbage
 if(ENABLE_TESTS)
     enable_testing()
     add_subdirectory(tests)
