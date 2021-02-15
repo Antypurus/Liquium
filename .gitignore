@@ -18,6 +18,9 @@ rules.ninja
 /build
 /build-msvc
 /build-clang
+cmake-build-*
+
+.idea
 
 #msvc ignores
 **.vcxproj
