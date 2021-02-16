@@ -21,6 +21,7 @@ rules.ninja
 cmake-build-*
 
 .idea
+*.rdbg
 
 #msvc ignores
 **.vcxproj
