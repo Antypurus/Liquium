@@ -5,7 +5,7 @@ file(GLOB_RECURSE EDITOR_SOURCES CONFIGURE_DEPENDS
         *.hpp
         ../Common/*.cpp
         ../Common/*.hpp)
-add_executable(${LIQUIUM_EDITOR} ${EDITOR_SOURCES})
+add_executable(${LIQUIUM_EDITOR} WIN32  ${EDITOR_SOURCES})
 
 target_include_directories(${LIQUIUM_EDITOR} PRIVATE ../Engine)
 target_link_libraries(${LIQUIUM_EDITOR} PRIVATE Liquium)
