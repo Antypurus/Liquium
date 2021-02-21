@@ -1,4 +1,4 @@
 #pragma once
-#include "../Common/dll.h"
+#include "dll.h"
 
 void LIQAPI placeholder();

@@ -3,7 +3,6 @@
 
 namespace liq
 {
-    
     struct Window
     {
         Window(HINSTANCE instance);

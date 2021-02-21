@@ -12,7 +12,6 @@ target_link_libraries(liquium_tests Catch2::Catch2)
 target_include_directories(liquium_tests PRIVATE ./ThirdParty/)
 target_include_directories(liquium_tests PRIVATE ../src/Engine)
 target_include_directories(liquium_tests PRIVATE ../src/Editor)
-target_include_directories(liquium_tests PRIVATE ../src/Common)
 
 include(CTest)
 catch_discover_tests(liquium_tests)
