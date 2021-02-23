@@ -6,16 +6,14 @@ namespace liq
     
 #define SMALL_STRING_OPTIMIZATION_SIZE 56 //NOTE(Tiago) if the whole struct can be packed into 64bytes it will fit into a cache line when using small string optimizations
     
-    static union string_internal
-    {
-        uint8* string = nullptr;
-        uint8[SMALL_STRING_OPTIMIZATION_SIZE] small_string = {};
-    }
-    
     struct string
     {
-        uint64 lenght = 0;
-        string_internal string;
-    }
+        union string_internal
+        {
+            uint8* large_string;
+            uint8 small_string[SMALL_STRING_OPTIMIZATION_SIZE];
+        };
+        size_t length = 0;
+    };
     
 }
