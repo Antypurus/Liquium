@@ -1,5 +1,5 @@
 version(1);
-project_name = "DXRenderer";
+project_name = "Liquium Engine";
 patterns = {
 "**.c",
 "**.cpp",

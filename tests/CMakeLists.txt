@@ -3,7 +3,13 @@ enable_testing()
 file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS
         ./src/*.cpp
         ./src/*.hpp)
-add_executable(liquium_tests ${TEST_SOURCES})
+
+file(GLOB_RECURSE MAIN_SOURCES CONFIGURE_DEPENDS
+        ../src/**.cpp
+        ../src/**.hpp
+)
+
+add_executable(liquium_tests ${TEST_SOURCES} ${MAIN_SOURCES})
 
 add_subdirectory(./ThirdParty/catch2)
 include(./ThirdParty/catch2/contrib/Catch.cmake)

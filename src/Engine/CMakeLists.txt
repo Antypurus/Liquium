@@ -12,11 +12,10 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         #clang frontend
 endif()
 
-file(GLOB_RECURSE ENGINE_SOURCES CONFIGURE_DEPENDS
-        *.cpp
-        *.hpp
-        ../Common/*.cpp
-        ../Common/*.hpp)
+file(GLOB_RECURSE ENGINE_SOURCES
+        **.cpp
+        **.hpp
+        )
 
 set(ENGINE_DYNAMIC_COMPILE OFF CACHE STRING "Sets weather the engine should be comipled into a dinamic library (DLL) or a static library (LIB)" FORCE)
 

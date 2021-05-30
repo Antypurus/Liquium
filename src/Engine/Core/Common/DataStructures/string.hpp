@@ -1,19 +1,37 @@
 #pragma once
 #include "../types.hpp"
+#include "../../../dll.h"
 
 namespace liq
 {
     
-#define SMALL_STRING_OPTIMIZATION_SIZE 56 //NOTE(Tiago) if the whole struct can be packed into 64bytes it will fit into a cache line when using small string optimizations
-    
-    struct string
+    struct long_string
     {
-        union string_internal
-        {
-            uint8* large_string;
-            uint8 small_string[SMALL_STRING_OPTIMIZATION_SIZE];
-        };
-        size_t length = 0;
+        char* string;
+		uint64 size;
+		uint64 capacity;
+		
+		uint64 GetCapacity() const;
     };
+    
+    struct short_string
+    {
+		char string[sizeof(long_string)];
+    };
+	
+	struct string
+	{
+		union string_internal
+		{
+			long_string long_str;
+			short_string short_str;
+		} str;
+		
+		string();
+		string(const string& str);
+		string(const char* str);
+		
+		bool is_short() const;
+	};
     
 }

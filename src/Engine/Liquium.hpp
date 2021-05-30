@@ -1,4 +1,3 @@
 #pragma once
 #include "dll.h"
-
-void LIQAPI placeholder();
+#include "Core/Common/DataStructures/string.hpp"
