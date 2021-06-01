@@ -14,8 +14,7 @@ if errorlevel 1 (
     exit /b %errorlevel%
 )
 
-cd build/msvc/bin/tests
-liquium_tests.exe
+.\build\msvc\bin\tests\liquium_tests.exe
 if errorlevel 1 (
     echo Failed to compile code
     exit /b %errorlevel%
