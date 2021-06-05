@@ -1,16 +1,10 @@
 #include "string.hpp"
 
-#include <stdio.h>
 #include <cmath>
+#include "../Math.hpp"
 
 namespace liq
 {
-	
-	//TODO(Tiago): put this in math header or something like that
-	float64 log(float64 base, float64 x)
-	{
-		return std::log(x)/std::log(base);
-	}
 	
 	uint64 long_string::ComputeRequiredCapacity(uint64 amount_to_store)
 	{
