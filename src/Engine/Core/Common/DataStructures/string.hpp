@@ -7,11 +7,17 @@ namespace liq
     
     struct long_string
     {
+		static inline const float64 growth_factor = 1.5;
+		
         char* string;
 		uint64 size;
 		uint64 capacity;
 		
+		void SetCapacity(uint64 capacity);
 		uint64 GetCapacity() const;
+		
+//		private:
+		uint64 ComputeRequiredCapacity(uint64 amount_to_store);
     };
     
     struct short_string
