@@ -5,6 +5,17 @@
 
 namespace liq
 {
+
+	static constexpr uint64 string_len(const char* str)
+	{
+		uint64 len = 1;
+		while(*str != 0)
+		{
+			len++;
+			str++;
+		}
+		return len;
+	}
 	
 	uint64 long_string::ComputeRequiredCapacity(uint64 amount_to_store)
 	{

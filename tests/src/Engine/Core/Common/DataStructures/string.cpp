@@ -1,6 +1,11 @@
 #include <catch2/catch.hpp>
 #include <Core/Common/DataStructures/string.hpp>
 
+TEST_CASE("String Lenght Calculator", "[String]")
+{
+	
+}
+
 TEST_CASE("Long String Set Capacity & GetCapacity", "[Long String]")
 {
 	using namespace liq;
