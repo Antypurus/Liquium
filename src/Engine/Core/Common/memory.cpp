@@ -1,6 +1,7 @@
 #include "memory.hpp"
 
 #include <stdlib.h>
+#include <string.h>
 
 namespace liq
 {
@@ -20,6 +21,11 @@ namespace liq
 	{
 		// TODO(Tiago): might wanna have some checks for null here
 		::free(ptr);
+	}
+	
+	void memcpy(void* source, void* dest, uint64 amount_to_copy, uint64 offset)
+	{
+		::memcpy(dest, (uint8*)source + offset, amount_to_copy);
 	}
 	
 }

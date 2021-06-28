@@ -10,4 +10,6 @@ namespace liq
 	void* realloc(void* ptr, uint64 new_size);
 	void free(void* ptr);
 	
+	void memcpy(void* source, void* dest, uint64 amount_to_copy, uint64 offset = 0);
+	
 }

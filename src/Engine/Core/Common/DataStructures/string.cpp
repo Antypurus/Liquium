@@ -17,8 +17,10 @@ namespace liq
 		return len;
 	}
 	
-	long_string::long_string(const char*)
+	long_string::long_string(const char* str)
 	{
+		const uint64 strlen = string_len(str);
+		const uint64 required_capaity = ComputeRequiredCapacity(strlen);
 		
 	}
 	
