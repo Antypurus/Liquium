@@ -5,7 +5,7 @@
 
 namespace liq
 {
-
+	
 	static constexpr uint64 string_len(const char* str)
 	{
 		uint64 len = 1;
@@ -17,11 +17,10 @@ namespace liq
 		return len;
 	}
 	
-	uint64 long_string::ComputeRequiredCapacity(uint64 amount_to_store)
+	long_string::long_string(const char*)
 	{
-		return (uint64)std::ceil(std::pow(growth_factor, std::ceil(log(growth_factor, (float64)amount_to_store))));
+		
 	}
-
 	
 	void long_string::SetCapacity(uint64 capacity)
 	{
@@ -44,6 +43,12 @@ namespace liq
 		((uint8*)&capacity)[0] <<= 1;
 		return capacity;
 	}
+	
+	uint64 long_string::ComputeRequiredCapacity(uint64 amount_to_store)
+	{
+		return (uint64)std::ceil(std::pow(growth_factor, std::ceil(log(growth_factor, (float64)amount_to_store))));
+	}
+	
 	
 	string::string()
 	{
