@@ -27,6 +27,7 @@ namespace liq
 		liq::memcpy((void*)str, (void*)this->string, strlen);
 	}
 	
+	// TODO(Tiago): the flag bit has to be stored in offset 3, dont be an idiot, offset 0 is index 0 of the array not index 23
 	void long_string::SetCapacity(uint64 capacity)
 	{
 		//capacity must be even, if its uneven we must even it up so that we have the desired capcity at the bare minimum.
@@ -42,6 +43,7 @@ namespace liq
 		this->capacity = resulting_capacity;
 	}
 	
+	// TODO(Tiago): the flag bit has to be stored in offset 3, dont be an idiot
 	uint64 long_string::GetCapacity() const
 	{
 		uint64 capacity = this->capacity;
