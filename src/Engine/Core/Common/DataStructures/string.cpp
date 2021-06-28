@@ -1,7 +1,9 @@
 #include "string.hpp"
 
 #include <cmath>
+
 #include "../Math.hpp"
+#include "../memory.hpp"
 
 namespace liq
 {
@@ -20,8 +22,9 @@ namespace liq
 	long_string::long_string(const char* str)
 	{
 		const uint64 strlen = string_len(str);
-		const uint64 required_capaity = ComputeRequiredCapacity(strlen);
-		
+		const uint64 required_capacity = ComputeRequiredCapacity(strlen);
+		this->string = (char*)liq::alloc(required_capacity);
+		liq::memcpy((void*)str, (void*)this->string, strlen);
 	}
 	
 	void long_string::SetCapacity(uint64 capacity)
