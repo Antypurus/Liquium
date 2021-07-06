@@ -36,9 +36,8 @@ namespace liq
 			capacity++;
 		}
 		
-		uint64 resulting_capacity = capacity;
-		((uint8*)&resulting_capacity)[0] >>= 1;
-		((uint8*)&resulting_capacity)[0] |= 0b10000000;
+		uint64 resulting_capacity = capacity >> 1;
+		((uint8*)&resulting_capacity)[7] |= 0b10000000;
 		
 		this->capacity = resulting_capacity;
 	}
@@ -47,7 +46,7 @@ namespace liq
 	uint64 long_string::GetCapacity() const
 	{
 		uint64 capacity = this->capacity;
-		((uint8*)&capacity)[0] <<= 1;
+		capacity <<= 1;
 		return capacity;
 	}
 	

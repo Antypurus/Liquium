@@ -29,20 +29,20 @@ TEST_CASE("Long String Set Capacity & GetCapacity", "[Long String]")
 	// ----------- With correct capacity encoding ----------------
 	
 	str.SetCapacity(2);
-	REQUIRE(str.GetCapacity()==2);
-	REQUIRE(str.capacity == 0b10000001);
+	REQUIRE(str.GetCapacity() == 2);
+    REQUIRE(str.capacity == 0b1000000000000000000000000000000000000000000000000000000000000001);
 	
 	str.SetCapacity(1);
 	REQUIRE(str.GetCapacity()==2);
-	REQUIRE(str.capacity == 0b10000001);
+    REQUIRE(str.capacity == 0b1000000000000000000000000000000000000000000000000000000000000001);
 	
 	str.SetCapacity(3);
 	REQUIRE(str.GetCapacity()==4);
-	REQUIRE(str.capacity == 0b10000010);
+    REQUIRE(str.capacity == 0b1000000000000000000000000000000000000000000000000000000000000010);
 	
 	str.SetCapacity(4);
 	REQUIRE(str.GetCapacity()==4);
-	REQUIRE(str.capacity == 0b10000010);
+    REQUIRE(str.capacity == 0b1000000000000000000000000000000000000000000000000000000000000010);
 	
 	// ------------ Edge cases with correct encoding -------------
 	
