@@ -27,6 +27,10 @@ set_target_properties(liquium_tests PROPERTIES SUFFIX ".exe")
 set_target_properties(liquium_tests PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(liquium_tests PROPERTIES CXX_STANDARD 20)
 
+target_compile_options(liquium_tests PRIVATE /W4 /WX)
+target_compile_options(liquium_tests PRIVATE ${CMAKE_CXX_FLAGS} /MP /nologo)
+target_compile_options(liquium_tests PRIVATE ${CMAKE_CXX_FLAGS} /wd26812 /wd4100)
+
 # warning blob of gabage incoming
 set_target_properties(liquium_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/tests)# required by clang
 set_target_properties(liquium_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/tests)# required by msvc

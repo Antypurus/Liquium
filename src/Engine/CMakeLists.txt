@@ -1,17 +1,3 @@
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        set(warnings "/W4 /WX /EHsc")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd26812")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /nologo")
-        
-        # Debug only compiler options
-        #add_compile_options("$<$<CONFIG:DEBUG>:/MDd>")
-        
-        # Release only compiler options
-        add_compile_options("$<$<CONFIG:RELEASE>:/Oi>")
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        #clang frontend
-endif()
-
 file(GLOB_RECURSE ENGINE_SOURCES
         **.cpp
         **.hpp
@@ -37,6 +23,20 @@ endif()
 
 set_target_properties(Liquium PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(Liquium PROPERTIES CXX_STANDARD 20)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(Liquium PRIVATE /W4 /WX)
+    target_compile_options(Liquium PRIVATE ${CMAKE_CXX_FLAGS} /MP /nologo)
+    target_compile_options(Liquium PRIVATE ${CMAKE_CXX_FLAGS} /wd26812 /wd4100)
+        
+    # Debug only compiler options
+    #add_compile_options("$<$<CONFIG:DEBUG>:/MDd>")
+        
+    # Release only compiler options
+    add_compile_options("$<$<CONFIG:RELEASE>:/Oi>")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    #clang frontend
+endif()
 
 # warning blob of gabage incoming
 set_target_properties(Liquium PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)# required by clang

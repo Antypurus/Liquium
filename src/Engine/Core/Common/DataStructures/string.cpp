@@ -28,15 +28,15 @@ namespace liq
 	}
 	
 	// TODO(Tiago): the flag bit has to be stored in offset 3, dont be an idiot, offset 0 is index 0 of the array not index 23
-	void long_string::SetCapacity(uint64 capacity)
+	void long_string::SetCapacity(uint64 p_capacity)
 	{
 		//capacity must be even, if its uneven we must even it up so that we have the desired capcity at the bare minimum.
-		if(capacity % 2 != 0)
+		if(p_capacity % 2 != 0)
 		{
-			capacity++;
+			p_capacity++;
 		}
 		
-		uint64 resulting_capacity = capacity >> 1;
+		uint64 resulting_capacity = p_capacity >> 1;
 		((uint8*)&resulting_capacity)[7] |= 0b10000000;
 		
 		this->capacity = resulting_capacity;
@@ -45,9 +45,9 @@ namespace liq
 	// TODO(Tiago): the flag bit has to be stored in offset 3, dont be an idiot
 	uint64 long_string::GetCapacity() const
 	{
-		uint64 capacity = this->capacity;
-		capacity <<= 1;
-		return capacity;
+		uint64 reconstructed_capacity = this->capacity;
+		reconstructed_capacity <<= 1;
+		return reconstructed_capacity;
 	}
 	
 	uint64 long_string::ComputeRequiredCapacity(uint64 amount_to_store)
@@ -60,17 +60,6 @@ namespace liq
 	{
 		this->str.short_str.string[0] = 0;
 		this->str.short_str.string[sizeof(long_string) - 1] = sizeof(long_string) - 1;
-	}
-	
-	
-	string::string(const string& str)
-	{
-		
-	}
-	
-	string::string(const char* str)
-	{
-		
 	}
 	
 	bool string::is_short() const
