@@ -12,7 +12,10 @@ namespace liq
 	// TODO(Tiago): Implement non-literal string constructor
 	// TODO(Tiago): Implement copy constructor
 	// TODO(Tiago): Implement move constructor
-    struct long_string
+	// TODO(Tiago): Implement destructor
+	// TODO(Tiago): Implement Assignment operator
+	// TODO(Tiago): Implement Move operatorions
+	struct long_string
     {
 		static inline const float64 growth_factor = 1.5;
 		
@@ -20,15 +23,13 @@ namespace liq
 		uint64 size = 0;
 		uint64 capacity = 0;
 		
-		long_string() = default;// NOTE(Tiago): There is no such thing as a default constructore because we need to set the flag.
+		long_string();
 		long_string(const char* str);
-		long_string(const long_string& str);
-		~long_string() = default;
 		
 		void SetCapacity(uint64 capacity);
 		uint64 GetCapacity() const;
 		
-//		private:
+        //private:
 		uint64 ComputeRequiredCapacity(uint64 amount_to_store);
     };
     

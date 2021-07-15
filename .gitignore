@@ -19,6 +19,7 @@ rules.ninja
 /build-msvc
 /build-clang
 cmake-build-*
+out
 
 .idea
 *.rdbg

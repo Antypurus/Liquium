@@ -19,20 +19,28 @@ namespace liq
 		return len;
 	}
 	
+	long_string::long_string()
+	{
+		
+	}
+	
 	long_string::long_string(const char* str)
 	{
 		const uint64 strlen = string_len(str);
 		const uint64 required_capacity = ComputeRequiredCapacity(strlen);
+		
+		this->size = strlen;
+		this->SetCapacity(required_capacity);
 		this->string = (char*)liq::alloc(required_capacity);
 		liq::memcpy((void*)str, (void*)this->string, strlen);
 	}
 	
-	// TODO(Tiago): the flag bit has to be stored in offset 3, dont be an idiot, offset 0 is index 0 of the array not index 23
 	void long_string::SetCapacity(uint64 p_capacity)
 	{
 		//capacity must be even, if its uneven we must even it up so that we have the desired capcity at the bare minimum.
 		if(p_capacity % 2 != 0)
 		{
+			// TODO(Tiago): check for potential overflow. Realistically it should never happen with a 63bit value, but its prolly better to be safe than sorry.
 			p_capacity++;
 		}
 		
