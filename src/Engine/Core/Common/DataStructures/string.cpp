@@ -3,12 +3,11 @@
 #include <cmath>
 
 #include "../Math.hpp"
-#include "../memory.hpp"
 
 namespace liq
 {
 	
-	static constexpr uint64 string_len(const char* str)
+	constexpr uint64 string_len(const char* str)
 	{
 		uint64 len = 1;
 		while(*str != 0)
@@ -20,19 +19,19 @@ namespace liq
 	}
 	
 	long_string::long_string()
+		:string(nullptr),size(0)
 	{
-		
+		this->SetCapacity(0);
 	}
 	
-	long_string::long_string(const char* str)
+	long_string::long_string(char* str)
+		:size(string_len(str))
 	{
-		const uint64 strlen = string_len(str);
-		const uint64 required_capacity = ComputeRequiredCapacity(strlen);
-		
-		this->size = strlen;
+		const uint64 required_capacity = ComputeRequiredCapacity(this->size);
 		this->SetCapacity(required_capacity);
+		
 		this->string = (char*)liq::alloc(required_capacity);
-		liq::memcpy((void*)str, (void*)this->string, strlen);
+		liq::memcpy((void*)str, (void*)this->string, this->size);
 	}
 	
 	void long_string::SetCapacity(uint64 p_capacity)

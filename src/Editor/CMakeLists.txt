@@ -15,6 +15,7 @@ target_compile_options(${LIQUIUM_EDITOR} PRIVATE ${CMAKE_CXX_FLAGS} /MP /nologo)
 
 # disabling annoying stupid warnings that come with w4
 target_compile_options(${LIQUIUM_EDITOR} PRIVATE ${CMAKE_CXX_FLAGS} /wd26812 /wd4100)
+target_link_options(${LIQUIUM_EDITOR} PUBLIC /DEBUG)
 
 set_target_properties(${LIQUIUM_EDITOR} PROPERTIES PREFIX "")
 set_target_properties(${LIQUIUM_EDITOR} PROPERTIES SUFFIX ".exe")
