@@ -24,14 +24,19 @@ namespace liq
 		uint64 size = 0;
 		uint64 capacity = 0;
 		
+		//default constructor
 		long_string();
+		//c-string constructor
 		long_string(char* str);
+		//copy constructor
+		long_string(const long_string& str);
 		
 		void SetCapacity(uint64 capacity);
 		uint64 GetCapacity() const;
 		
 		uint64 ComputeRequiredCapacity(uint64 amount_to_store);
 		
+		//string literal constructor
 		template<uint64 length> long_string(const char (&str)[length])
 			:size(length)
 		{
