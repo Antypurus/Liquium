@@ -5,7 +5,10 @@
 
 int WinMain(HINSTANCE instance, HINSTANCE previnstance, PSTR lpcommand_line, int ncmd_show)
 {
-	liq::long_string str("test");
-    liq::Window::Window(instance);
+	using namespace liq;
+	
+    char arr[] = "hello";
+	long_string str(arr);
+    Window::Window(instance);
     return 0;
 }

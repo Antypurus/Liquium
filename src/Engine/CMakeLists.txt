@@ -38,7 +38,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     #clang frontend
 endif()
 
-target_link_options(Liquium PUBLIC /DEBUG /NODEFAULTLIB:library)
+#target_link_options(Liquium PUBLIC /DEBUG /NODEFAULTLIB:library)
 
 # warning blob of gabage incoming
 set_target_properties(Liquium PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)# required by clang

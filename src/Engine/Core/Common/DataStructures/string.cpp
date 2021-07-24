@@ -1,6 +1,7 @@
 #include "string.hpp"
 
 #include <cmath>
+#include <stdio.h>
 
 #include "../Math.hpp"
 
@@ -27,11 +28,34 @@ namespace liq
 	long_string::long_string(char* str)
 		:size(string_len(str))
 	{
+		OutputDebugString("regular c-string constructor\n");
+		
 		const uint64 required_capacity = ComputeRequiredCapacity(this->size);
 		this->SetCapacity(required_capacity);
 		
 		this->string = (char*)liq::alloc(required_capacity);
 		liq::memcpy((void*)str, (void*)this->string, this->size);
+	}
+	
+	long_string::long_string(const long_string& str)
+	{
+		OutputDebugString("copy constructor\n");
+		this->size = str.size;
+		this->capacity = str.capacity;
+		
+		uint64 required_capacity = this->GetCapacity();
+		
+		this->string = (char*)liq::alloc(required_capacity);
+		liq::memcpy(str.string, this->string, this->size);
+	}
+	
+	long_string::long_string(long_string&& str) noexcept
+	{
+		OutputDebugString("move constructor\n");
+		this->size = str.size;
+		this->capacity = str.capacity;
+		this->string = str.string;
+		str.string = nullptr;
 	}
 	
 	void long_string::SetCapacity(uint64 p_capacity)

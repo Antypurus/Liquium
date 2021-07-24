@@ -1,4 +1,7 @@
 #pragma once
+
+#include <Windows.h>
+
 #include "../types.hpp"
 #include "../../../dll.h"
 #include "../memory.hpp"
@@ -10,7 +13,6 @@ namespace liq
 	struct short_string;
 	struct string;
 	
-	// TODO(Tiago): Implement copy constructor
 	// TODO(Tiago): Implement move constructor
 	// TODO(Tiago): Implement destructor
 	// TODO(Tiago): Implement Assignment operator
@@ -30,6 +32,8 @@ namespace liq
 		long_string(char* str);
 		//copy constructor
 		long_string(const long_string& str);
+		//move constructor
+		long_string(long_string&& str) noexcept;
 		
 		void SetCapacity(uint64 capacity);
 		uint64 GetCapacity() const;
@@ -40,6 +44,7 @@ namespace liq
 		template<uint64 length> long_string(const char (&str)[length])
 			:size(length)
 		{
+			OutputDebugStringA("string literal constructor\n");
 			const uint64 required_capacity = this->ComputeRequiredCapacity(this->size);
 			this->SetCapacity(required_capacity);
 			
