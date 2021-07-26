@@ -52,10 +52,24 @@ namespace liq
 	long_string::long_string(long_string&& str) noexcept
 	{
 		OutputDebugString("move constructor\n");
+		
 		this->size = str.size;
 		this->capacity = str.capacity;
 		this->string = str.string;
+		
 		str.string = nullptr;
+		str.capacity = 0;
+		str.size = 0;
+	}
+	
+	long_string::~long_string()
+	{
+		this->size = 0;
+		this->capacity = 0;
+		if(this->string != nullptr)
+		{
+			liq::free((void*)this->string);
+		}
 	}
 	
 	void long_string::SetCapacity(uint64 p_capacity)
@@ -87,17 +101,29 @@ namespace liq
 	}
 	
 	
+	string::string_internal::~string_internal()
+	{
+		if(this->is_short())
+		{
+			this->short_str.~short_string();
+		}
+		else
+		{
+			this->long_str.~long_string();
+		}
+	}
+	
 	string::string()
 	{
 		this->str.short_str.string[0] = 0;
 		this->str.short_str.string[sizeof(long_string) - 1] = sizeof(long_string) - 1;
 	}
 	
-	bool string::is_short() const
+	bool string::string_internal::is_short() const
 	{
 		// so bit 7 is the flag, this means that for long strings when getting the capacity we must recosntrcut it from the
 		// next 7 bits, this can be done by taking this bit and shifting it left by 1
-		return (((char*)&this->str)[sizeof(long_string) - 1] && 0b10000000) == 0;
+		return (((char*)this)[sizeof(long_string) - 1] && 0b10000000) == 0;
 	}
 	
 }

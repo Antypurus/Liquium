@@ -13,8 +13,6 @@ namespace liq
 	struct short_string;
 	struct string;
 	
-	// TODO(Tiago): Implement move constructor
-	// TODO(Tiago): Implement destructor
 	// TODO(Tiago): Implement Assignment operator
 	// TODO(Tiago): Implement Move operatorions
 	// TODO(Tiago): Implement operator+ (concatenation)
@@ -30,10 +28,14 @@ namespace liq
 		long_string();
 		//c-string constructor
 		long_string(char* str);
-		//copy constructor
+		//copy constructor for long_strings
 		long_string(const long_string& str);
+		// TODO(Tiago): copy constructor for short strings
+		long_string(const short_string& str) {};
 		//move constructor
 		long_string(long_string&& str) noexcept;
+		//destructor
+		~long_string();
 		
 		void SetCapacity(uint64 capacity);
 		uint64 GetCapacity() const;
@@ -64,13 +66,14 @@ namespace liq
 		{
 			long_string long_str = long_string::long_string();
 			short_string short_str;
+			
+			bool is_short() const;
+			~string_internal();
 		} str;
 		
 		string();
 		string(const string& str);
 		string(const char* str);
-		
-		bool is_short() const;
 	};
     
 }

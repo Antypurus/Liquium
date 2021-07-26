@@ -7,8 +7,6 @@ int WinMain(HINSTANCE instance, HINSTANCE previnstance, PSTR lpcommand_line, int
 {
 	using namespace liq;
 	
-    char arr[] = "hello";
-	long_string str(arr);
     Window::Window(instance);
     return 0;
 }
