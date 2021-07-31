@@ -6,15 +6,15 @@
 #include "../../../dll.h"
 #include "../memory.hpp"
 
+
 namespace liq
 {	
-	
 	struct long_string;
 	struct short_string;
 	struct string;
 	
 	// TODO(Tiago): Implement Assignment operator
-	// TODO(Tiago): Implement Move operatorions
+	// TODO(Tiago): Implement Move assignment operator
 	// TODO(Tiago): Implement operator+ (concatenation)
 	struct long_string
     {
