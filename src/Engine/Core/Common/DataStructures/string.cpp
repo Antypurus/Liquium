@@ -125,7 +125,7 @@ namespace liq
 		
 		if(this->size != other.size) return false;
 		if(this->string[0] != other.string[0]) return false;
-		if(this->string[this->size - 1] != other.string[other.size - 1]) return false;
+		if(this->string[this->size - 1] != other.string[other.size - 1]) return false; // NOTE(Tiago): isnt this always the null terminator, meaning we need to check one back from that. Might need to add some extra length checking.
 		
 		// TODO(Tiago): i can probably vectorize this to check multiple indices at once, then again the compiler might have enough info to that on his own in this case. Need to check disassembly.
 		// TODO(Tiago): additionally i should be able to reduce concurrent cache line usage from 4 to 2 for strings that span multiple cache lines. This might lead to less cache line misses as things go in and out of cache due to things outside of this classes responsability.
