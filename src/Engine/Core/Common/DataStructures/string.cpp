@@ -72,6 +72,38 @@ namespace liq
 		}
 	}
 	
+	long_string& long_string::operator=(const long_string& str)
+	{
+		this->size = str.size;
+		this->capacity = str.capacity;
+		
+		const uint64 required_capacity = str.GetCapacity();
+		this->string = (char*)liq::alloc(required_capacity);
+		
+		liq::memcpy(str.string, this->string, str.size);
+		
+		return *this;
+	}
+	
+	long_string& long_string::operator=(long_string&& str) noexcept
+	{
+		if(&str == this) return *this;
+		this->string = str.string;
+		this->size = str.size;
+		this->capacity = str.capacity;
+		
+		str.string = nullptr;
+		str.size = 0;
+		str.capacity = 0;
+		
+		return *this;
+	}
+	
+	long_string::operator const char*()
+	{
+		return this->string;
+	}
+	
 	void long_string::SetCapacity(uint64 p_capacity)
 	{
 		//capacity must be even, if its uneven we must even it up so that we have the desired capcity at the bare minimum.

@@ -13,9 +13,9 @@ namespace liq
 	struct short_string;
 	struct string;
 	
-	// TODO(Tiago): Implement Assignment operator
-	// TODO(Tiago): Implement Move assignment operator
 	// TODO(Tiago): Implement operator+ (concatenation)
+	// TODO(Tiago): operator== (comparison)
+	// TODO(Tiago): is empty
 	struct long_string
     {
 		static inline const float64 growth_factor = 1.5;
@@ -36,6 +36,10 @@ namespace liq
 		long_string(long_string&& str) noexcept;
 		//destructor
 		~long_string();
+		
+		long_string& operator=(const long_string& str);
+		long_string& operator=(long_string&& str) noexcept;
+		explicit operator const char*();
 		
 		void SetCapacity(uint64 capacity);
 		uint64 GetCapacity() const;
