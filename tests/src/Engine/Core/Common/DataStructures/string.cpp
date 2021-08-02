@@ -1,11 +1,6 @@
 #include <catch2/catch.hpp>
 #include <Core/Common/DataStructures/string.hpp>
 
-TEST_CASE("String Lenght Calculator", "[String]")
-{
-	
-}
-
 TEST_CASE("Long String Set Capacity & GetCapacity", "[Long String]")
 {
 	using namespace liq;
@@ -47,6 +42,19 @@ TEST_CASE("Long String Set Capacity & GetCapacity", "[Long String]")
 	// ------------ Edge cases with correct encoding -------------
 	
 	//NOTE(Tiago): the reason the results differ is the encoding scheme.
+}
+
+TEST_CASE("Long String Comparison Operator Tests (operator==)", "[Long String]")
+{
+	using namespace liq;
+	
+	long_string str1("string1");
+	long_string str2("string2");
+	long_string str3("string1");
+	
+	REQUIRE((str1 == str2) == false);
+	REQUIRE((str1 == str3) == true);
+	REQUIRE((str3 == str2) == false);
 }
 	
 	

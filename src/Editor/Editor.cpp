@@ -7,6 +7,11 @@ int WinMain(HINSTANCE instance, HINSTANCE previnstance, PSTR lpcommand_line, int
 {
 	using namespace liq;
 	
+	long_string str = "string1";
+	long_string str2 = "string1";
+	
+    bool res = (str == str2);
+	
     Window::Window(instance);
-    return 0;
+    return res;
 }

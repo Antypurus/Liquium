@@ -14,8 +14,9 @@ namespace liq
 	struct string;
 	
 	// TODO(Tiago): Implement operator+ (concatenation)
-	// TODO(Tiago): operator== (comparison)
 	// TODO(Tiago): is empty
+	// TODO(Tiago): operator[]
+	// TODO(Tiago): .at(index) function (const version of operator[])
 	struct long_string
     {
 		static inline const float64 growth_factor = 1.5;
@@ -40,6 +41,8 @@ namespace liq
 		long_string& operator=(const long_string& str);
 		long_string& operator=(long_string&& str) noexcept;
 		explicit operator const char*();
+		
+		bool operator==(const long_string& other) const;
 		
 		void SetCapacity(uint64 capacity);
 		uint64 GetCapacity() const;

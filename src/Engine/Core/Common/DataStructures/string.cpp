@@ -119,6 +119,30 @@ namespace liq
 		this->capacity = resulting_capacity;
 	}
 	
+	bool long_string::operator==(const long_string& other) const
+	{
+		if(this->string == nullptr && other.string == nullptr) return true;// NOTE(Tiago): special case for the default constructor so as to make the following comparisons safe.
+		
+		if(this->size != other.size) return false;
+		if(this->string[0] != other.string[0]) return false;
+		if(this->string[this->size - 1] != other.string[other.size - 1]) return false;
+		
+		// TODO(Tiago): i can probably vectorize this to check multiple indices at once, then again the compiler might have enough info to that on his own in this case. Need to check disassembly.
+		// TODO(Tiago): additionally i should be able to reduce concurrent cache line usage from 4 to 2 for strings that span multiple cache lines. This might lead to less cache line misses as things go in and out of cache due to things outside of this classes responsability.
+		for(uint64 i = 0;i < this->size/2; ++i)
+		{
+			if(this->string[i] != other.string[i]) return false;
+			if(this->string[this->size - 1 - i] != other.string[this->size - 1 - i]) return false;
+		}
+		if(this->size%2!=0)
+		{
+			const uint64 middle_index = (this->size - 1)/2 + 1;
+			if(this->string[middle_index] != other.string[middle_index]) return false;
+		}
+		
+		return true;
+	}
+	
 	// TODO(Tiago): the flag bit has to be stored in offset 3, dont be an idiot
 	uint64 long_string::GetCapacity() const
 	{
