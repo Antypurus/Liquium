@@ -72,6 +72,16 @@ namespace liq
 		}
 	}
 	
+	char& long_string::operator[](uint64 index)
+	{
+		return this->string[index];
+	}
+	
+	char long_string::at(uint64 index) const
+	{
+		return this->string[index];
+	}
+	
 	long_string& long_string::operator=(const long_string& str)
 	{
 		this->size = str.size;
@@ -97,6 +107,16 @@ namespace liq
 		str.capacity = 0;
 		
 		return *this;
+	}
+	
+	bool long_string::IsEmpty() const
+	{
+		return this->size == 0;
+	}
+	
+	long_string::operator bool() const
+	{
+		return this->IsEmpty();
 	}
 	
 	long_string::operator const char*()
@@ -143,6 +163,12 @@ namespace liq
 		return true;
 	}
 	
+	bool long_string::operator==(char* other) const
+	{
+		// TODO(Tiago): Implement this
+		return false;
+	}
+	
 	// TODO(Tiago): the flag bit has to be stored in offset 3, dont be an idiot
 	uint64 long_string::GetCapacity() const
 	{
@@ -151,7 +177,7 @@ namespace liq
 		return reconstructed_capacity;
 	}
 	
-	uint64 long_string::ComputeRequiredCapacity(uint64 amount_to_store)
+	uint64 long_string::ComputeRequiredCapacity(uint64 amount_to_store) const
 	{
 		return (uint64)std::ceil(std::pow(growth_factor, std::ceil(log(growth_factor, (float64)amount_to_store))));
 	}

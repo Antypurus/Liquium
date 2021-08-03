@@ -14,9 +14,6 @@ namespace liq
 	struct string;
 	
 	// TODO(Tiago): Implement operator+ (concatenation)
-	// TODO(Tiago): is empty
-	// TODO(Tiago): operator[]
-	// TODO(Tiago): .at(index) function (const version of operator[])
 	struct long_string
     {
 		static inline const float64 growth_factor = 1.5;
@@ -38,16 +35,23 @@ namespace liq
 		//destructor
 		~long_string();
 		
+		
 		long_string& operator=(const long_string& str);
 		long_string& operator=(long_string&& str) noexcept;
+		bool operator==(const long_string& other) const;
+		bool operator==(char* other) const;
+		bool operator==(const short_string& other) const {return false;}// TODO(Tiago): implement this
+		operator bool() const;
 		explicit operator const char*();
 		
-		bool operator==(const long_string& other) const;
+		char& operator[](uint64 index);
+		char at(uint64 index) const;
 		
+		bool IsEmpty() const;
 		void SetCapacity(uint64 capacity);
 		uint64 GetCapacity() const;
 		
-		uint64 ComputeRequiredCapacity(uint64 amount_to_store);
+		uint64 ComputeRequiredCapacity(uint64 amount_to_store) const;
 		
 		//string literal constructor
 		template<uint64 length> long_string(const char (&str)[length])
@@ -60,6 +64,13 @@ namespace liq
 			this->string = (char*)liq::alloc(required_capacity);
 			liq::memcpy((void*)str, (void*)this->string, this->size);
 		}
+		
+		template<uint64 length> bool operator==(const char (&str)[length]) const
+		{
+			// TODO(Tiago): implement this
+			return false;
+		}
+		
     };
     
     struct short_string
