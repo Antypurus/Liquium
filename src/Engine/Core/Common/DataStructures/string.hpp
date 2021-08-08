@@ -85,6 +85,7 @@ namespace liq
 			long_string long_str = long_string::long_string();
 			short_string short_str;
 			
+			string_internal(){};//TODO(Tiago): need to implement this
 			bool is_short() const;
 			~string_internal();
 		} str;

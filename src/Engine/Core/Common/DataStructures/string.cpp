@@ -142,7 +142,8 @@ namespace liq
 	bool long_string::operator==(const long_string& other) const
 	{
 		if(this->string == nullptr && other.string == nullptr) return true;// NOTE(Tiago): special case for the default constructor so as to make the following comparisons safe.
-		
+		if(this->string == nullptr || other.string == nullptr) return false;
+
 		if(this->size != other.size) return false;
 		if(this->string[0] != other.string[0]) return false;
 		if(this->string[this->size - 1] != other.string[other.size - 1]) return false; // NOTE(Tiago): isnt this always the null terminator, meaning we need to check one back from that. Might need to add some extra length checking.
