@@ -169,8 +169,7 @@ namespace liq
 		// TODO(Tiago): Implement this
 		return false;
 	}
-	
-	// TODO(Tiago): the flag bit has to be stored in offset 3, dont be an idiot
+
 	uint64 long_string::GetCapacity() const
 	{
 		uint64 reconstructed_capacity = this->capacity;

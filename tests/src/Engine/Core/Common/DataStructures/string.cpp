@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 #include <Core/Common/DataStructures/string.hpp>
 
-TEST_CASE("Long String Set Capacity & GetCapacity", "[Long String]")
+TEST_CASE("Set Capacity & Get Capacity", "[Long String]")
 {
 	using namespace liq;
 	
@@ -42,16 +42,60 @@ TEST_CASE("Long String Set Capacity & GetCapacity", "[Long String]")
 	}
 }
 
-TEST_CASE("Long String Comparison Operator Tests (operator==)", "[Long String]")
+TEST_CASE("Comparison Operator With Long String ( operator==(const long_string&) )", "[Long String]")
 {
 	using namespace liq;
 	
-	long_string str1("string1");
-	long_string str2("string2");
-	long_string str3("string1");
+	SECTION("Same size long strings strings")
+    {
+        long_string str1("string1");
+        long_string str2("string2");
+        long_string str3("string1");
+
+        REQUIRE_FALSE(str1 == str2);
+        REQUIRE(str1 == str3);
+        REQUIRE_FALSE(str3 == str2);
+    }
+
+	SECTION("Different Size long Strings")
+    {
+        long_string str1("abcdefghjk");
+        long_string str2("abc");
+
+		REQUIRE_FALSE(str1 == str2);
+	}
 	
-	REQUIRE((str1 == str2) == false);
-	REQUIRE((str1 == str3) == true);
-	REQUIRE((str3 == str2) == false);
+	SECTION("Different capacity magnitude strings")
+	{
+		long_string str1("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		long_string str2("b");
+		
+		REQUIRE_FALSE(str1 == str2);
+		REQUIRE_FALSE(str2 == str1);
+		REQUIRE(str1 == str1);
+		REQUIRE(str2 == str2);
+	}
 }
 
+TEST_CASE("Comparison operator with string literals ( operator==(const char (&other)[length] )", "[Long String]")
+{
+    using namespace liq;
+
+	SECTION("Same size string literals")
+	{
+        long_string str("string1");
+
+		REQUIRE_FALSE(str == "string2");
+        REQUIRE(str == "string1");
+        REQUIRE_FALSE("string2" == str);
+	}
+
+	SECTION("Diffrent size string literals")
+	{
+        long_string str("string1");
+
+		REQUIRE_FALSE(str == "abcdefgh");
+        REQUIRE_FALSE("abcdefghsadflkufdsakjdfasbn"  == str);
+	}
+
+}
