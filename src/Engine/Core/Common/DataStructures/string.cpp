@@ -166,8 +166,42 @@ namespace liq
 	
 	bool long_string::operator==(char* other) const
 	{
-		// TODO(Tiago): Implement this
-		return false;
+		if (this->string == nullptr && other == nullptr)
+			return true; // NOTE(Tiago): special case for the default constructor so as to make the following
+		// comparisons safe.
+		if (this->string == nullptr || other == nullptr)
+			return false;
+		
+		uint64 other_length = strlen(other);
+		
+		if (this->size != other_length)
+			return false;
+		if (this->string[0] != other[0])
+			return false;
+		if (this->string[this->size - 1] != other[other_length - 1])
+			return false; // NOTE(Tiago): isnt this always the null terminator, meaning we need to check one back
+		// from that. Might need to add some extra length checking.
+		
+		// TODO(Tiago): i can probably vectorize this to check multiple indices at once, then again the compiler
+		// might have enough info to that on his own in this case. Need to check disassembly.
+		// TODO(Tiago): additionally i should be able to reduce concurrent cache line usage from 4 to 2 for strings
+		// that span multiple cache lines. This might lead to less cache line misses as things go in and out of
+		// cache due to things outside of this classes responsability.
+		for (uint64 i = 0; i < this->size / 2; ++i)
+		{
+			if (this->string[i] != other[i])
+				return false;
+			if (this->string[this->size - 1 - i] != other[this->size - 1 - i])
+				return false;
+		}
+		if (this->size % 2 != 0)
+		{
+			const uint64 middle_index = (this->size - 1) / 2 + 1;
+			if (this->string[middle_index] != other[middle_index])
+				return false;
+		}
+		
+		return true;
 	}
 
 	uint64 long_string::GetCapacity() const

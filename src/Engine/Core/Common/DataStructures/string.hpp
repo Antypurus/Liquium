@@ -38,14 +38,24 @@ namespace liq
 		
 		long_string& operator=(const long_string& str);
 		long_string& operator=(long_string&& str) noexcept;
+		
 		bool operator==(const long_string& other) const;
 		bool operator==(char* other) const;
 		bool operator==(const short_string& other) const {return false;}// TODO(Tiago): implement this
+		
 		operator bool() const;
 		explicit operator const char*();
 		
 		char& operator[](uint64 index);
 		char at(uint64 index) const;
+		
+		long_string operator+(const long_string& other);// TODO(Tiago): implement this
+		long_string operator+(char* other);//TODO(Tiago): implement this
+		long_string operator+(const short_string& other);// TODO(Tiago): implement this
+		long_string& operator+=(const long_string& other);// TODO(Tiago): implement this
+		long_string& operator+=(char* other);// TODO(Tiago): implement this
+		long_string& operator+=(const short_string& other);// TODO(Tiago): implement this
+		
 		
 		bool IsEmpty() const;
 		void SetCapacity(uint64 capacity);
@@ -101,6 +111,18 @@ namespace liq
             }
 
             return true;
+		}
+		
+		template<uint64 other_length> long_string operator+(const char (&other)[other_length])
+		{
+			// TODO(Tiago): implement this
+			return *this;
+		}
+		
+		template<uint64 other_length> long_string& operator+=(const char (&other)[other_length])
+		{
+			// TODO(Tiago): implement this
+			return *this;
 		}
 		
     };
