@@ -81,6 +81,99 @@ namespace liq
 	{
 		return this->string[index];
 	}
+
+    long_string long_string::operator+(const long_string& other) const
+	{
+		const uint64 combined_size = this->size -1 + other.size;
+		const uint64 required_capacity = ComputeRequiredCapacity(combined_size);
+		
+		long_string ret;
+		ret.string = (char*)liq::alloc(required_capacity);
+		ret.size = combined_size;
+		ret.SetCapacity(required_capacity);
+		
+		liq::memcpy(this->string, ret.string, this->size - 1);
+		liq::memcpy(other.string, ret.string + this->size -1, other.size);
+		
+		return ret;
+	}
+	
+	long_string long_string::operator+(char* other) const
+	{
+		const uint64 other_size = string_len(other);
+		const uint64 combined_size = this->size -1 + other_size;
+		const uint64 required_capacity = ComputeRequiredCapacity(combined_size);
+		
+		long_string ret;
+		ret.string = (char*)liq::alloc(required_capacity);
+		ret.size = combined_size;
+		ret.SetCapacity(required_capacity);
+		
+		liq::memcpy(this->string, ret.string, this->size - 1);
+		liq::memcpy(other, ret.string + this->size -1, other_size);
+		
+		return ret;
+	}
+	
+	long_string long_string::operator+(const short_string& other) const
+	{
+		const uint64 combined_size = this->size -1 + other.size();
+		const uint64 required_capacity = ComputeRequiredCapacity(combined_size);
+		
+		long_string ret;
+		ret.string = (char*)liq::alloc(required_capacity);
+		ret.size = combined_size;
+		ret.SetCapacity(required_capacity);
+		
+		liq::memcpy(this->string, ret.string, this->size - 1);
+		liq::memcpy((void*)other.string, ret.string + this->size -1, other.size());
+		
+		return ret;
+	}
+	
+	long_string& long_string::operator+=(const long_string& other)
+	{
+		// TODO(Tiago): 
+		const uint64 combined_size = this->size -1 + other.size;
+		if(combined_size > this->GetCapacity())
+		{
+			const uint64 required_capacity = ComputeRequiredCapacity(combined_size);
+			this->ResizeStringBuffer(required_capacity);
+		}
+		liq::memcpy(other.string, this->string+this->size-1, other.size);
+		this->size = combined_size;
+		
+		return *this;
+	}
+	
+	long_string& long_string::operator+=(char* other)
+	{
+		const uint64 other_size = string_len(other);
+		const uint64 combined_size = this->size -1 + other_size;
+		if(combined_size > this->GetCapacity())
+		{
+			const uint64 required_capacity = ComputeRequiredCapacity(combined_size);
+			this->ResizeStringBuffer(required_capacity);
+		}
+		liq::memcpy(other, this->string+this->size-1, other_size);
+		this->size = combined_size;
+		
+		return *this;
+	}
+	
+	long_string& long_string::operator+=(const short_string& other)
+	{
+		const uint64 combined_size = this->size -1 + other.size();
+		if(combined_size > this->GetCapacity())
+		{
+			const uint64 required_capacity = ComputeRequiredCapacity(combined_size);
+			this->ResizeStringBuffer(required_capacity);
+		}
+		liq::memcpy((void*)other.string, this->string+this->size-1, other.size());
+		this->size = combined_size;
+		
+		return *this;
+	}
 	
 	long_string& long_string::operator=(const long_string& str)
 	{
@@ -211,11 +304,31 @@ namespace liq
 		return reconstructed_capacity;
 	}
 	
+	void long_string::ResizeStringBuffer(uint64 p_capacity)
+	{
+		char* new_buffer = (char*)liq::alloc(p_capacity);
+		if(new_buffer == nullptr)
+		{
+			// TODO(Tiago): failed to allocate buffer
+			printf("failed to allocate");
+		}
+		liq::memcpy(this->string, new_buffer, this->size);
+		
+		liq::free(this->string);
+		
+		this->SetCapacity(p_capacity);
+		this->string = new_buffer;
+	}
+	
 	uint64 long_string::ComputeRequiredCapacity(uint64 amount_to_store) const
 	{
 		return (uint64)std::ceil(std::pow(growth_factor, std::ceil(log(growth_factor, (float64)amount_to_store))));
 	}
 	
+	uint64 short_string::size() const
+	{
+		return (sizeof(short_string) - this->string[sizeof(short_string) -1]);
+	}
 	
 	string::string_internal::~string_internal()
 	{

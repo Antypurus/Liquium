@@ -27,7 +27,7 @@ set_target_properties(Liquium PROPERTIES CXX_STANDARD 20)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(Liquium PRIVATE /W4 /WX)
     target_compile_options(Liquium PRIVATE ${CMAKE_CXX_FLAGS} /MP /nologo)
-    target_compile_options(Liquium PRIVATE ${CMAKE_CXX_FLAGS} /wd26812 /wd4100)
+    target_compile_options(Liquium PRIVATE ${CMAKE_CXX_FLAGS} /wd26812 /wd4100 /wd4189)
         
     # Debug only compiler options
     #add_compile_options("$<$<CONFIG:DEBUG>:/MDd>")

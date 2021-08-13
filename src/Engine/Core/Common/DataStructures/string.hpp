@@ -38,7 +38,7 @@ namespace liq
 		
 		long_string& operator=(const long_string& str);
 		long_string& operator=(long_string&& str) noexcept;
-		
+				
 		bool operator==(const long_string& other) const;
 		bool operator==(char* other) const;
 		bool operator==(const short_string& other) const {return false;}// TODO(Tiago): implement this
@@ -49,9 +49,9 @@ namespace liq
 		char& operator[](uint64 index);
 		char at(uint64 index) const;
 		
-		long_string operator+(const long_string& other);// TODO(Tiago): implement this
-		long_string operator+(char* other);//TODO(Tiago): implement this
-		long_string operator+(const short_string& other);// TODO(Tiago): implement this
+		long_string operator+(const long_string& other) const;// TODO(Tiago): implement this
+		long_string operator+(char* other) const;//TODO(Tiago): implement this
+		long_string operator+(const short_string& other) const;// TODO(Tiago): implement this
 		long_string& operator+=(const long_string& other);// TODO(Tiago): implement this
 		long_string& operator+=(char* other);// TODO(Tiago): implement this
 		long_string& operator+=(const short_string& other);// TODO(Tiago): implement this
@@ -60,6 +60,7 @@ namespace liq
 		bool IsEmpty() const;
 		void SetCapacity(uint64 capacity);
 		uint64 GetCapacity() const;
+		void ResizeStringBuffer(uint64 capacity);
 		
 		uint64 ComputeRequiredCapacity(uint64 amount_to_store) const;
 		
@@ -113,15 +114,33 @@ namespace liq
             return true;
 		}
 		
-		template<uint64 other_length> long_string operator+(const char (&other)[other_length])
+		template<uint64 other_length> long_string operator+(const char (&other)[other_length]) const
 		{
-			// TODO(Tiago): implement this
-			return *this;
+			const uint64 combined_size = this->size -1 + other_length;
+			const uint64 required_capacity = ComputeRequiredCapacity(combined_size);
+			
+			long_string ret;
+			ret.string = (char*)liq::alloc(required_capacity);
+			ret.size = combined_size;
+			ret.SetCapacity(required_capacity);
+			
+			liq::memcpy(this->string, ret.string, this->size - 1);
+			liq::memcpy((void*)other, ret.string + this->size -1, other_length);
+			
+			return ret;
 		}
 		
 		template<uint64 other_length> long_string& operator+=(const char (&other)[other_length])
 		{
-			// TODO(Tiago): implement this
+			const uint64 combined_size = this->size -1 + other_length;
+			if(combined_size > this->GetCapacity())
+			{
+				const uint64 required_capacity = ComputeRequiredCapacity(combined_size);
+				this->ResizeStringBuffer(required_capacity);
+			}
+			liq::memcpy(other, this->string+this->size-1, other_length);
+			this->size = combined_size;
+			
 			return *this;
 		}
 		
@@ -130,6 +149,8 @@ namespace liq
     struct short_string
     {
 		char string[sizeof(long_string)] = {0};
+		
+		uint64 size() const;
     };
 	
 	struct string
