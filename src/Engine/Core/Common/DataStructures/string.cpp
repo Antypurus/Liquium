@@ -49,6 +49,18 @@ namespace liq
 		liq::memcpy(str.string, this->string, this->size);
 	}
 	
+	long_string::long_string(const short_string& str)
+	{
+		OutputDebugString("constructor from short strign\n");
+		this->size = str.size();
+		
+		const uint64 required_capacity = ComputeRequiredCapacity(this->size);
+		this->SetCapacity(required_capacity);
+		
+		this->string = (char*)liq::alloc(required_capacity);
+		liq::memcpy((void*)str.string, this->string, this->size);
+	}
+	
 	long_string::long_string(long_string&& str) noexcept
 	{
 		OutputDebugString("move constructor\n");
@@ -291,6 +303,43 @@ namespace liq
 		{
 			const uint64 middle_index = (this->size - 1) / 2 + 1;
 			if (this->string[middle_index] != other[middle_index])
+				return false;
+		}
+		
+		return true;
+	}
+	
+	bool long_string::operator==(const short_string& other) const
+	{
+		if (this->string == nullptr)
+			return false;
+		
+		uint64 other_length = other.size();
+		
+		if (this->size != other_length)
+			return false;
+		if (this->string[0] != other.string[0])
+			return false;
+		if (this->string[this->size - 1] != other.string[other_length - 1])
+			return false; // NOTE(Tiago): isnt this always the null terminator, meaning we need to check one back
+		// from that. Might need to add some extra length checking.
+		
+		// TODO(Tiago): i can probably vectorize this to check multiple indices at once, then again the compiler
+		// might have enough info to that on his own in this case. Need to check disassembly.
+		// TODO(Tiago): additionally i should be able to reduce concurrent cache line usage from 4 to 2 for strings
+		// that span multiple cache lines. This might lead to less cache line misses as things go in and out of
+		// cache due to things outside of this classes responsability.
+		for (uint64 i = 0; i < this->size / 2; ++i)
+		{
+			if (this->string[i] != other.string[i])
+				return false;
+			if (this->string[this->size - 1 - i] != other.string[this->size - 1 - i])
+				return false;
+		}
+		if (this->size % 2 != 0)
+		{
+			const uint64 middle_index = (this->size - 1) / 2 + 1;
+			if (this->string[middle_index] != other.string[middle_index])
 				return false;
 		}
 		

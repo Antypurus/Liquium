@@ -29,19 +29,18 @@ namespace liq
 		//copy constructor for long_strings
 		long_string(const long_string& str);
 		// TODO(Tiago): copy constructor for short strings
-		long_string(const short_string& str) {};
+		long_string(const short_string& str);
 		//move constructor
 		long_string(long_string&& str) noexcept;
 		//destructor
 		~long_string();
-		
 		
 		long_string& operator=(const long_string& str);
 		long_string& operator=(long_string&& str) noexcept;
 				
 		bool operator==(const long_string& other) const;
 		bool operator==(char* other) const;
-		bool operator==(const short_string& other) const {return false;}// TODO(Tiago): implement this
+		bool operator==(const short_string& other) const;
 		
 		operator bool() const;
 		explicit operator const char*();
@@ -49,13 +48,12 @@ namespace liq
 		char& operator[](uint64 index);
 		char at(uint64 index) const;
 		
-		long_string operator+(const long_string& other) const;// TODO(Tiago): implement this
-		long_string operator+(char* other) const;//TODO(Tiago): implement this
-		long_string operator+(const short_string& other) const;// TODO(Tiago): implement this
-		long_string& operator+=(const long_string& other);// TODO(Tiago): implement this
-		long_string& operator+=(char* other);// TODO(Tiago): implement this
-		long_string& operator+=(const short_string& other);// TODO(Tiago): implement this
-		
+		long_string operator+(const long_string& other) const;
+		long_string operator+(char* other) const;
+		long_string operator+(const short_string& other) const;
+		long_string& operator+=(const long_string& other);
+		long_string& operator+=(char* other);
+		long_string& operator+=(const short_string& other);
 		
 		bool IsEmpty() const;
 		void SetCapacity(uint64 capacity);
