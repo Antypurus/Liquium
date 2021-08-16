@@ -37,8 +37,23 @@ namespace liq
 		long_string& operator=(const long_string& str);
 		long_string& operator=(long_string&& str) noexcept;
 		long_string& operator=(char* str);
-		long_string& operator=(const short_string& str);// TODO(Tiago): 
-		template<uint64 strlen> long_string& operator=(const char (&str)[strlen]);// TODO(Tiago): 
+		long_string& operator=(const short_string& str); 
+		template<uint64 strlen> long_string& operator=(const char (&str)[strlen])
+		{
+			const uint64 required_capacity = ComputeRequiredCapacity(strlen);
+			
+			if(this->string != nullptr)
+			{
+				liq::free(this->string);
+			}
+			this->string = (char*)liq::alloc(required_capacity);
+			liq::memcpy((void*)str.string, this->string, strlen);
+			
+			this->size = strlen;
+			this->SetCapacity(required_capacity);
+			
+			return *this;
+		}
 				
 		bool operator==(const long_string& other) const;
 		bool operator==(char* other) const;

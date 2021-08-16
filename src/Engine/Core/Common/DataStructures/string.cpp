@@ -92,7 +92,7 @@ namespace liq
 		const uint64 required_capacity = str.GetCapacity();
 		if(this->string != nullptr)
 		{
-			liq::free((void*)this->string);
+			liq::free(this->string);
 		}
 		this->string = (char*)liq::alloc(required_capacity);
 		
@@ -121,11 +121,11 @@ namespace liq
 		
 		const uint64 string_size = string_len(str);
 		const uint64 required_capacity = ComputeRequiredCapacity(string_size);
+		
 		if(this->string != nullptr)
 		{
-			liq::free((void*)this->string);
+			liq::free(this->string);
 		}
-		
 		this->string = (char*)liq::alloc(required_capacity);
 		liq::memcpy(str, this->string, string_size);
 		
@@ -137,6 +137,19 @@ namespace liq
 	
 	long_string& long_string::operator=(const short_string& str)
 	{
+		const uint64 string_size = str.size();
+		const uint64 required_capacity = ComputeRequiredCapacity(string_size);
+		
+		if(this->string != nullptr)
+		{
+			liq::free(this->string);
+		}
+		this->string = (char*)liq::alloc(required_capacity);
+		liq::memcpy((void*)str.string, this->string, string_size);
+		
+		this->size = string_size;
+		this->SetCapacity(required_capacity);
+		
 		return *this;
 	}
 	
