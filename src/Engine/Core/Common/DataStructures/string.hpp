@@ -36,7 +36,7 @@ namespace liq
 		
 		long_string& operator=(const long_string& str);
 		long_string& operator=(long_string&& str) noexcept;
-		long_string& operator=(char* str);// TODO(Tiago): 
+		long_string& operator=(char* str);
 		long_string& operator=(const short_string& str);// TODO(Tiago): 
 		template<uint64 strlen> long_string& operator=(const char (&str)[strlen]);// TODO(Tiago): 
 				

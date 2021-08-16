@@ -84,6 +84,62 @@ namespace liq
 		}
 	}
 	
+	long_string& long_string::operator=(const long_string& str)
+	{
+		this->size = str.size;
+		this->capacity = str.capacity;
+		
+		const uint64 required_capacity = str.GetCapacity();
+		if(this->string != nullptr)
+		{
+			liq::free((void*)this->string);
+		}
+		this->string = (char*)liq::alloc(required_capacity);
+		
+		liq::memcpy(str.string, this->string, str.size);
+		
+		return *this;
+	}
+	
+	long_string& long_string::operator=(long_string&& str) noexcept
+	{
+		if(&str == this) return *this;
+		this->string = str.string;
+		this->size = str.size;
+		this->capacity = str.capacity;
+		
+		str.string = nullptr;
+		str.size = 0;
+		str.capacity = 0;
+		
+		return *this;
+	}
+	
+	long_string& long_string::operator=(char* str)
+	{
+		if(str == this->string) return *this;
+		
+		const uint64 string_size = string_len(str);
+		const uint64 required_capacity = ComputeRequiredCapacity(string_size);
+		if(this->string != nullptr)
+		{
+			liq::free((void*)this->string);
+		}
+		
+		this->string = (char*)liq::alloc(required_capacity);
+		liq::memcpy(str, this->string, string_size);
+		
+		this->size = string_size;
+		this->SetCapacity(required_capacity);
+		
+		return *this;
+	}
+	
+	long_string& long_string::operator=(const short_string& str)
+	{
+		return *this;
+	}
+	
 	char& long_string::operator[](uint64 index)
 	{
 		return this->string[index];
@@ -93,8 +149,8 @@ namespace liq
 	{
 		return this->string[index];
 	}
-
-    long_string long_string::operator+(const long_string& other) const
+	
+	long_string long_string::operator+(const long_string& other) const
 	{
 		const uint64 combined_size = this->size -1 + other.size;
 		const uint64 required_capacity = ComputeRequiredCapacity(combined_size);
@@ -182,33 +238,6 @@ namespace liq
 		}
 		liq::memcpy((void*)other.string, this->string+this->size-1, other.size());
 		this->size = combined_size;
-		
-		return *this;
-	}
-	
-	long_string& long_string::operator=(const long_string& str)
-	{
-		this->size = str.size;
-		this->capacity = str.capacity;
-		
-		const uint64 required_capacity = str.GetCapacity();
-		this->string = (char*)liq::alloc(required_capacity);
-		
-		liq::memcpy(str.string, this->string, str.size);
-		
-		return *this;
-	}
-	
-	long_string& long_string::operator=(long_string&& str) noexcept
-	{
-		if(&str == this) return *this;
-		this->string = str.string;
-		this->size = str.size;
-		this->capacity = str.capacity;
-		
-		str.string = nullptr;
-		str.size = 0;
-		str.capacity = 0;
 		
 		return *this;
 	}
