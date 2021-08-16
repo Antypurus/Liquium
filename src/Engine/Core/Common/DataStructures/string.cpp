@@ -145,7 +145,6 @@ namespace liq
 	
 	long_string& long_string::operator+=(const long_string& other)
 	{
-		// TODO(Tiago): 
 		const uint64 combined_size = this->size -1 + other.size;
 		if(combined_size > this->GetCapacity())
 		{

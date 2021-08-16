@@ -13,7 +13,6 @@ namespace liq
 	struct short_string;
 	struct string;
 	
-	// TODO(Tiago): Implement operator+ (concatenation)
 	struct long_string
     {
 		static inline const float64 growth_factor = 1.5;
@@ -28,7 +27,7 @@ namespace liq
 		long_string(char* str);
 		//copy constructor for long_strings
 		long_string(const long_string& str);
-		// TODO(Tiago): copy constructor for short strings
+		//copy constructor for short strings
 		long_string(const short_string& str);
 		//move constructor
 		long_string(long_string&& str) noexcept;
@@ -37,6 +36,9 @@ namespace liq
 		
 		long_string& operator=(const long_string& str);
 		long_string& operator=(long_string&& str) noexcept;
+		long_string& operator=(char* str);// TODO(Tiago): 
+		long_string& operator=(const short_string& str);// TODO(Tiago): 
+		template<uint64 strlen> long_string& operator=(const char (&str)[strlen]);// TODO(Tiago): 
 				
 		bool operator==(const long_string& other) const;
 		bool operator==(char* other) const;
@@ -147,6 +149,37 @@ namespace liq
     struct short_string
     {
 		char string[sizeof(long_string)] = {0};
+		
+		short_string(char* str);// TODO(Tiago): 
+		short_string(const short_string& str);// TODO(Tiago): 
+		
+		template<uint64 strlen> short_string(const char (&str)[strlen])
+		{
+			// TODO(Tiago): 
+		}
+		 
+		short_string& operator=(char* other);// TODO(Tiago): 
+		short_string& operator=(const short_string& other);// TODO(Tiago): 
+		template<uint64 strlen> short_string& operator=(const char (&str)[strlen]);// TODO(Tiago): 
+		
+		bool operator==(const short_string& other) const;// TODO(Tiago): 
+		bool operator==(char* other) const;// TODO(Tiago): 
+		bool operator==(const long_string& other) const;// TODO(Tiago): 
+		template<uint64 strlen> bool operator==(const char (&other)[strlen]) const;// TODO(Tiago): 
+		
+		short_string operator+(const short_string& other) const;// TODO(Tiago): 
+		short_string operator+(char* other) const;// TODO(Tiago): 
+		template<uint64 strlen> short_string operator+(const char (&other)[strlen]) const;// TODO(Tiago): 
+		
+		short_string& operator+=(const short_string& other);// TODO(Tiago): 
+		short_string& operator+=(char* other);// TODO(Tiago): 
+		template<uint64 strlen> short_string& operator+=(const char (&other)[strlen]);// TODO(Tiago): 
+		
+		char& operator[](uint64 index);// TODO(Tiago):
+		char at(uint64 index) const;// TODO(Tiago): 
+		
+		explicit operator char*();// TODO(Tiago): 
+		operator bool();// TODO(Tiago): 
 		
 		uint64 size() const;
     };
