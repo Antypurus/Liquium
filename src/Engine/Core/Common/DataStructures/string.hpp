@@ -167,7 +167,6 @@ namespace liq
 		
 		short_string(char* str);// TODO(Tiago): 
 		short_string(const short_string& str);// TODO(Tiago): 
-		
 		template<uint64 strlen> short_string(const char (&str)[strlen])
 		{
 			// TODO(Tiago): 
@@ -197,6 +196,7 @@ namespace liq
 		operator bool();// TODO(Tiago): 
 		
 		uint64 size() const;
+		void SetSize(uint64 size);
     };
 	
 	struct string

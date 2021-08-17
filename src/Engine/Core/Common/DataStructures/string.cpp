@@ -415,11 +415,30 @@ namespace liq
 		return (uint64)std::ceil(std::pow(growth_factor, std::ceil(log(growth_factor, (float64)amount_to_store))));
 	}
 	
+#ifdef NDEBUG
+#define assert(x)
+#else
+#define assert(x) __debugbreak();
+#endif
+	
+	short_string::short_string(char* str)
+	{
+		const uint64 strlen = string_len(str);
+		assert(strlen <= sizeof(short_string));
+		liq::memcpy(str, (char*)this->string, strlen);
+		this->SetSize(strlen);
+	}
+	
 	uint64 short_string::size() const
 	{
 		return (sizeof(short_string) - this->string[sizeof(short_string) -1]);
 	}
 	
+	void short_string::SetSize(uint64 size)
+	{
+		this->string[sizeof(short_string)-1] = (uint8)(sizeof(short_string) - size);
+	}
+		
 	string::string_internal::~string_internal()
 	{
 		if(this->is_short())
