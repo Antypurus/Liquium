@@ -165,7 +165,8 @@ namespace liq
     {
 		char string[sizeof(long_string)] = {0};
 		
-		short_string(char* str);// TODO(Tiago): 
+		short_string();// TODO(Tiago): 
+		short_string(char* str);
 		short_string(const short_string& str);// TODO(Tiago): 
 		template<uint64 strlen> short_string(const char (&str)[strlen])
 		{
