@@ -19,6 +19,44 @@ namespace liq
 		return len;
 	}
 	
+	bool strcmp(const char* first, uint64 first_len, const char* second, uint64 second_len)
+	{
+		if (first == nullptr && second == nullptr)
+			return true; // NOTE(Tiago): special case for the default constructor so as to make the following
+		// comparisons safe.
+		if (first == nullptr || second == nullptr)
+			return false;
+		
+		if (first_len != second_len)
+			return false;
+		if (first[0] != second[0])
+			return false;
+		if (first[first_len - 1] != second[second_len - 1])
+			return false; // NOTE(Tiago): isnt this always the null terminator, meaning we need to check one back
+		// from that. Might need to add some extra length checking.
+		
+		// TODO(Tiago): i can probably vectorize this to check multiple indices at once, then again the compiler
+		// might have enough info to that on his own in this case. Need to check disassembly.
+		// TODO(Tiago): additionally i should be able to reduce concurrent cache line usage from 4 to 2 for strings
+		// that span multiple cache lines. This might lead to less cache line misses as things go in and out of
+		// cache due to things outside of this classes responsability.
+		for (uint64 i = 0; i < first_len / 2; ++i)
+		{
+			if (first[i] != second[i])
+				return false;
+			if (first[first_len - 1 - i] != second[second_len - 1 - i])
+				return false;
+		}
+		if (first_len % 2 != 0)
+		{
+			const uint64 middle_index = (first_len - 1) / 2 + 1;
+			if (first[middle_index] != second[middle_index])
+				return false;
+		}
+		
+		return true;
+	}
+	
 	long_string::long_string()
 		:string(nullptr),size(0)
 	{
@@ -287,104 +325,18 @@ namespace liq
 	
 	bool long_string::operator==(const long_string& other) const
 	{
-		if(this->string == nullptr && other.string == nullptr) return true;// NOTE(Tiago): special case for the default constructor so as to make the following comparisons safe.
-		if(this->string == nullptr || other.string == nullptr) return false;
-
-		if(this->size != other.size) return false;
-		if(this->string[0] != other.string[0]) return false;
-		if(this->string[this->size - 1] != other.string[other.size - 1]) return false; // NOTE(Tiago): isnt this always the null terminator, meaning we need to check one back from that. Might need to add some extra length checking.
-		
-		// TODO(Tiago): i can probably vectorize this to check multiple indices at once, then again the compiler might have enough info to that on his own in this case. Need to check disassembly.
-		// TODO(Tiago): additionally i should be able to reduce concurrent cache line usage from 4 to 2 for strings that span multiple cache lines. This might lead to less cache line misses as things go in and out of cache due to things outside of this classes responsability.
-		for(uint64 i = 0;i < this->size/2; ++i)
-		{
-			if(this->string[i] != other.string[i]) return false;
-			if(this->string[this->size - 1 - i] != other.string[this->size - 1 - i]) return false;
-		}
-		if(this->size%2!=0)
-		{
-			const uint64 middle_index = (this->size - 1)/2 + 1;
-			if(this->string[middle_index] != other.string[middle_index]) return false;
-		}
-		
-		return true;
+		return strcmp(this->string, this->size, other.string, other.size);
 	}
 	
 	bool long_string::operator==(char* other) const
 	{
-		if (this->string == nullptr && other == nullptr)
-			return true; // NOTE(Tiago): special case for the default constructor so as to make the following
-		// comparisons safe.
-		if (this->string == nullptr || other == nullptr)
-			return false;
-		
-		uint64 other_length = strlen(other);
-		
-		if (this->size != other_length)
-			return false;
-		if (this->string[0] != other[0])
-			return false;
-		if (this->string[this->size - 1] != other[other_length - 1])
-			return false; // NOTE(Tiago): isnt this always the null terminator, meaning we need to check one back
-		// from that. Might need to add some extra length checking.
-		
-		// TODO(Tiago): i can probably vectorize this to check multiple indices at once, then again the compiler
-		// might have enough info to that on his own in this case. Need to check disassembly.
-		// TODO(Tiago): additionally i should be able to reduce concurrent cache line usage from 4 to 2 for strings
-		// that span multiple cache lines. This might lead to less cache line misses as things go in and out of
-		// cache due to things outside of this classes responsability.
-		for (uint64 i = 0; i < this->size / 2; ++i)
-		{
-			if (this->string[i] != other[i])
-				return false;
-			if (this->string[this->size - 1 - i] != other[this->size - 1 - i])
-				return false;
-		}
-		if (this->size % 2 != 0)
-		{
-			const uint64 middle_index = (this->size - 1) / 2 + 1;
-			if (this->string[middle_index] != other[middle_index])
-				return false;
-		}
-		
-		return true;
+		const uint64 other_len = string_len(other);
+		return strcmp(this->string, this->size, other, other_len);
 	}
 	
 	bool long_string::operator==(const short_string& other) const
 	{
-		if (this->string == nullptr)
-			return false;
-		
-		uint64 other_length = other.size();
-		
-		if (this->size != other_length)
-			return false;
-		if (this->string[0] != other.string[0])
-			return false;
-		if (this->string[this->size - 1] != other.string[other_length - 1])
-			return false; // NOTE(Tiago): isnt this always the null terminator, meaning we need to check one back
-		// from that. Might need to add some extra length checking.
-		
-		// TODO(Tiago): i can probably vectorize this to check multiple indices at once, then again the compiler
-		// might have enough info to that on his own in this case. Need to check disassembly.
-		// TODO(Tiago): additionally i should be able to reduce concurrent cache line usage from 4 to 2 for strings
-		// that span multiple cache lines. This might lead to less cache line misses as things go in and out of
-		// cache due to things outside of this classes responsability.
-		for (uint64 i = 0; i < this->size / 2; ++i)
-		{
-			if (this->string[i] != other.string[i])
-				return false;
-			if (this->string[this->size - 1 - i] != other.string[this->size - 1 - i])
-				return false;
-		}
-		if (this->size % 2 != 0)
-		{
-			const uint64 middle_index = (this->size - 1) / 2 + 1;
-			if (this->string[middle_index] != other.string[middle_index])
-				return false;
-		}
-		
-		return true;
+		return strcmp(this->string, this->size, other.string, other.size());
 	}
 
 	uint64 long_string::GetCapacity() const
@@ -421,12 +373,47 @@ namespace liq
 #define assert(x) __debugbreak();
 #endif
 	
+	short_string::short_string()
+	{
+		this->SetSize(0);
+	}
+	
 	short_string::short_string(char* str)
 	{
 		const uint64 strlen = string_len(str);
 		assert(strlen <= sizeof(short_string));
 		liq::memcpy(str, (char*)this->string, strlen);
 		this->SetSize(strlen);
+	}
+	
+	short_string::short_string(const short_string& str)
+	{
+		liq::memcpy((char*)str.string,(char*)this->string, sizeof(short_string));
+	}
+	
+	short_string& short_string::operator=(char* other)
+	{
+		if(this->string == other) return *this;
+		
+		const uint64 strlen = string_len(other);
+		assert(strlen <= sizeof(short_string));
+		
+		liq::memcpy(other, this->string, strlen);
+		this->SetSize(strlen);
+		
+		return *this;
+	}
+	
+	short_string& short_string::operator=(const short_string& other)
+	{
+		if(this == &other) return *this;
+		liq::memcpy((char*)other.string,(char*)this->string, sizeof(short_string));
+		return *this;
+	}
+	
+	bool short_string::operator==(const short_string& other) const
+	{
+		return strcmp(this->string,this->size(), other.string, other.size());
 	}
 	
 	uint64 short_string::size() const

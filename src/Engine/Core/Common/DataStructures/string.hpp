@@ -13,6 +13,8 @@ namespace liq
 	struct short_string;
 	struct string;
 	
+	bool strcmp(const char* first, uint64 first_len, const char* second, uint64 second_len);
+	
 	struct long_string
     {
 		static inline const float64 growth_factor = 1.5;
@@ -93,40 +95,7 @@ namespace liq
 		
 		template <uint64 other_length> bool operator==(const char (&other)[other_length]) const
 		{
-            if (this->string == nullptr && other == nullptr)
-                return true; // NOTE(Tiago): special case for the default constructor so as to make the following
-                             // comparisons safe.
-            if (this->string == nullptr || other == nullptr)
-                return false;
-
-            if (this->size != other_length)
-                return false;
-            if (this->string[0] != other[0])
-                return false;
-            if (this->string[this->size - 1] != other[other_length - 1])
-                return false; // NOTE(Tiago): isnt this always the null terminator, meaning we need to check one back
-                              // from that. Might need to add some extra length checking.
-
-            // TODO(Tiago): i can probably vectorize this to check multiple indices at once, then again the compiler
-            // might have enough info to that on his own in this case. Need to check disassembly.
-            // TODO(Tiago): additionally i should be able to reduce concurrent cache line usage from 4 to 2 for strings
-            // that span multiple cache lines. This might lead to less cache line misses as things go in and out of
-            // cache due to things outside of this classes responsability.
-            for (uint64 i = 0; i < this->size / 2; ++i)
-            {
-                if (this->string[i] != other[i])
-                    return false;
-                if (this->string[this->size - 1 - i] != other[this->size - 1 - i])
-                    return false;
-            }
-            if (this->size % 2 != 0)
-            {
-                const uint64 middle_index = (this->size - 1) / 2 + 1;
-                if (this->string[middle_index] != other[middle_index])
-                    return false;
-            }
-
-            return true;
+            return strcmp(this->string, this->size, other, other_length);
 		}
 		
 		template<uint64 other_length> long_string operator+(const char (&other)[other_length]) const
@@ -165,17 +134,28 @@ namespace liq
     {
 		char string[sizeof(long_string)] = {0};
 		
-		short_string();// TODO(Tiago): 
+		short_string();
 		short_string(char* str);
-		short_string(const short_string& str);// TODO(Tiago): 
+		short_string(const short_string& str);
 		template<uint64 strlen> short_string(const char (&str)[strlen])
 		{
-			// TODO(Tiago): 
+			static_assert(strlen <= sizeof(short_string), "Short sttrings must be at most 24 bytes)");
+			liq::memcpy(str, this->string, strlen);
+			this->SetSize(strlen);
 		}
 		 
-		short_string& operator=(char* other);// TODO(Tiago): 
-		short_string& operator=(const short_string& other);// TODO(Tiago): 
-		template<uint64 strlen> short_string& operator=(const char (&str)[strlen]);// TODO(Tiago): 
+		short_string& operator=(char* other);
+		short_string& operator=(const short_string& other);
+		template<uint64 strlen> short_string& operator=(const char (&str)[strlen])
+		{
+			if(this->string == str) return *this;
+			static_assert(strlen <= sizeof(short_string), "Short sttrings must be at most 24 bytes)");
+			
+			liq::memcpy(str, this->string, strlen);
+			this->SetSize(strlen);
+			
+			return *this;
+		}
 		
 		bool operator==(const short_string& other) const;// TODO(Tiago): 
 		bool operator==(char* other) const;// TODO(Tiago): 
