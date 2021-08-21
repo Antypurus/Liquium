@@ -158,7 +158,7 @@ namespace liq
 		}
 		
 		bool operator==(const short_string& other) const;
-		bool operator==(char* other) const;// TODO(Tiago): 
+		bool operator==(char* other) const;
 		bool operator==(const long_string& other) const;// TODO(Tiago): 
 		template<uint64 strlen> bool operator==(const char (&other)[strlen]) const;// TODO(Tiago): 
 		

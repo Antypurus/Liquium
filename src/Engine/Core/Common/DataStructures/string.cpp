@@ -416,6 +416,12 @@ namespace liq
 		return strcmp(this->string,this->size(), other.string, other.size());
 	}
 	
+	bool short_string::operator==(char* other) const
+	{
+		const uint64 other_len = string_len(other);
+		return strcmp(this->string, this->size(), other, other_len);
+	}
+	
 	uint64 short_string::size() const
 	{
 		return (sizeof(short_string) - this->string[sizeof(short_string) -1]);
