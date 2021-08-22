@@ -159,10 +159,13 @@ namespace liq
 		
 		bool operator==(const short_string& other) const;
 		bool operator==(char* other) const;
-		bool operator==(const long_string& other) const;// TODO(Tiago): 
-		template<uint64 strlen> bool operator==(const char (&other)[strlen]) const;// TODO(Tiago): 
+		bool operator==(const long_string& other) const;
+		template<uint64 strlen> bool operator==(const char (&other)[strlen]) const
+		{
+			return strcmp(this->string, this->size(), other, strlen);
+		}
 		
-		short_string operator+(const short_string& other) const;// TODO(Tiago): 
+		short_string operator+(const short_string& other) const;
 		short_string operator+(char* other) const;// TODO(Tiago): 
 		template<uint64 strlen> short_string operator+(const char (&other)[strlen]) const;// TODO(Tiago): 
 		

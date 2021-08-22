@@ -422,6 +422,23 @@ namespace liq
 		return strcmp(this->string, this->size(), other, other_len);
 	}
 	
+	bool short_string::operator==(const long_string& other) const
+	{
+		return strcmp(this->string, this->size(), other.string, other.size);
+	}
+	
+	short_string short_string::operator+(const short_string& other) const
+	{
+		assert((this->size() + other.size() - 1) <= sizeof(short_string));
+		
+		short_string ret;
+		liq::memcpy((void*)this->string, ret.string, this->size() - 1);
+		liq::memcpy((void*)other.string, ret.string + this->size() -1, other.size());
+		ret.SetSize(this->size() + other.size() -1);
+		
+		return ret;
+	}
+	
 	uint64 short_string::size() const
 	{
 		return (sizeof(short_string) - this->string[sizeof(short_string) -1]);
