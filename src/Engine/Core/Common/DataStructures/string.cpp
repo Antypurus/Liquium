@@ -439,6 +439,11 @@ namespace liq
 		return ret;
 	}
 	
+	short_string short_string::operator+(char* other) const
+	{
+		return this;
+	}
+	
 	uint64 short_string::size() const
 	{
 		return (sizeof(short_string) - this->string[sizeof(short_string) -1]);
