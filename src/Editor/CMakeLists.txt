@@ -5,10 +5,17 @@ file(GLOB_RECURSE EDITOR_SOURCES CONFIGURE_DEPENDS
         *.hpp
         ../Common/*.cpp
         ../Common/*.hpp)
-add_executable(${LIQUIUM_EDITOR} ${EDITOR_SOURCES})
+add_executable(${LIQUIUM_EDITOR} WIN32  ${EDITOR_SOURCES})
 
 target_include_directories(${LIQUIUM_EDITOR} PRIVATE ../Engine)
 target_link_libraries(${LIQUIUM_EDITOR} PRIVATE Liquium)
+
+target_compile_options(${LIQUIUM_EDITOR} PRIVATE /W4 /WX)
+target_compile_options(${LIQUIUM_EDITOR} PRIVATE ${CMAKE_CXX_FLAGS} /MP /nologo)
+
+# disabling annoying stupid warnings that come with w4
+target_compile_options(${LIQUIUM_EDITOR} PRIVATE ${CMAKE_CXX_FLAGS} /wd26812 /wd4100)
+#target_link_options(${LIQUIUM_EDITOR} PUBLIC /DEBUG)
 
 set_target_properties(${LIQUIUM_EDITOR} PROPERTIES PREFIX "")
 set_target_properties(${LIQUIUM_EDITOR} PROPERTIES SUFFIX ".exe")

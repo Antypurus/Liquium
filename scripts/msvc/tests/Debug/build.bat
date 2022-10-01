@@ -21,26 +21,29 @@ if exist .\build\msvc\build_type (
 )
  
 Rem runs the cmake scripts if either the buld file did not exists or the old build type was not debug
-if %cmake_config_present%==0 (
-    call ./scripts/msvc/cmake.bat -DENABLE_TESTS=ON
+(
+    call .\scripts\msvc\cmake.bat -DENABLE_TESTS=ON
     if errorlevel 1 (
         echo Failed to run cmake configuration for debug build type
         exit /b %errorlevel%
     )
-    if exist ./build/msvc/build_type (
+    if exist .\build\msvc\build_type (
         del /q /f .\build\msvc\build_type
         if errorlevel 1 (
            echo Failed to reset build_type file
+           exit /b %errorlevel%
         )
     )
-    echo Debug>> ./build/msvc/build_type
+    echo Debug>> .\build\msvc\build_type
     if errorlevel 1 (
         echo Failed to write build type to build folder, rebuld script may not work
+        exit /b %errorlevel%
     )
 )
 
 Rem compiles the test code
-cd build/msvc
+cd build\msvc
+
 cmake --build . --target liquium_tests -j %NUMBER_OF_PROCESSORS% --config Debug
 if errorlevel 1 (
     echo Failed to compile code

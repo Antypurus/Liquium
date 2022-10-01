@@ -3,7 +3,13 @@ enable_testing()
 file(GLOB_RECURSE TEST_SOURCES CONFIGURE_DEPENDS
         ./src/*.cpp
         ./src/*.hpp)
-add_executable(liquium_tests ${TEST_SOURCES})
+
+file(GLOB_RECURSE MAIN_SOURCES CONFIGURE_DEPENDS
+        ../src/**.cpp
+        ../src/**.hpp
+)
+
+add_executable(liquium_tests ${TEST_SOURCES} ${MAIN_SOURCES})
 
 add_subdirectory(./ThirdParty/catch2)
 include(./ThirdParty/catch2/contrib/Catch.cmake)
@@ -12,7 +18,6 @@ target_link_libraries(liquium_tests Catch2::Catch2)
 target_include_directories(liquium_tests PRIVATE ./ThirdParty/)
 target_include_directories(liquium_tests PRIVATE ../src/Engine)
 target_include_directories(liquium_tests PRIVATE ../src/Editor)
-target_include_directories(liquium_tests PRIVATE ../src/Common)
 
 include(CTest)
 catch_discover_tests(liquium_tests)
@@ -21,6 +26,10 @@ set_target_properties(liquium_tests PROPERTIES PREFIX "")
 set_target_properties(liquium_tests PROPERTIES SUFFIX ".exe")
 set_target_properties(liquium_tests PROPERTIES LINKER_LANGUAGE CXX)
 set_target_properties(liquium_tests PROPERTIES CXX_STANDARD 20)
+
+target_compile_options(liquium_tests PRIVATE /W4 /WX)
+target_compile_options(liquium_tests PRIVATE ${CMAKE_CXX_FLAGS} /MP /nologo)
+target_compile_options(liquium_tests PRIVATE ${CMAKE_CXX_FLAGS} /wd26812 /wd4100)
 
 # warning blob of gabage incoming
 set_target_properties(liquium_tests PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/tests)# required by clang

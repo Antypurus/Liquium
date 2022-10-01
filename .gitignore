@@ -18,6 +18,11 @@ rules.ninja
 /build
 /build-msvc
 /build-clang
+cmake-build-*
+out
+
+.idea
+*.rdbg
 
 #msvc ignores
 **.vcxproj
@@ -28,3 +33,6 @@ x64
 .vs
 *.vcxproj.user
 .vscode
+
+#vim ignores
+**~
